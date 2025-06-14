@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Обновление питомца</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f1f3f6;
+            font-family: 'Segoe UI', sans-serif;
+            color: #2c2c2c;
+            line-height: 1.6;
+        }
+
+        .container-form {
+            background-color: #ffffff;
+            padding: 2rem;
+            margin: 2rem auto;
+            border-radius: 12px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.05);
+            max-width: 720px;
+        }
+
+        .container-form h1 {
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            color: #4b0082;
+        }
+
+        label {
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-control {
+            border-radius: 8px;
+        }
+
+        .form-check-label {
+            margin-left: 4px;
+            font-weight: 500;
+        }
+
+        .btn {
+            min-width: 140px;
+            border-radius: 8px;
+        }
+
+        .btn + .btn {
+            margin-left: 12px;
+        }
+
+        .text-danger {
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+    </style>
+</head>
+
+<body>
+
+<div th:replace="~{auth_clients/client_menu :: navigation}"></div>
+
+<div class="container-form">
+    <h1>Обновление данных питомца</h1>
+    <form th:action="@{/pets/update}" th:object="${animal}" method="post">
+        <input type="hidden" th:field="*{id}"/>
+
+        <div class="form-group">
+            <label for="name">Кличка:</label>
+            <input type="text" id="name" th:field="*{name}" class="form-control" oninput="capitalizeFirstLetter(this)" />
+            <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="animalType">Вид животного:</label>
+            <select id="animalType" th:field="*{animalType}" class="form-control" onchange="updateBreeds()">
+                <option value="">Не указывать</option>
+                <option th:each="type : ${animalTypes}" th:value="${type.id}" th:text="${type.name}"></option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="breed">Порода:</label>
+            <select id="breed" name="breed" th:field="*{breed}" class="form-control"
+                    th:attr="data-selected-id=${animal.breed != null ? animal.breed.id : ''}">
+            <option value="">Не указывать</option>
+            </select>
+            <div class="text-danger" th:if="${#fields.hasErrors('breed')}" th:errors="*{breed}"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="birthday">Дата рождения:</label>
+            <input type="date" id="birthday" th:field="*{birthday}" class="form-control"/>
+            <div class="text-danger" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"></div>
+        </div>
+
+        <div class="form-group">
+            <label>Пол:</label>
+            <div class="d-flex flex-wrap">
+                <div th:each="genderValue : ${T(ru.marinalyamina.vetclinic.models.enums.AnimalGender).values()}"
+                     class="form-check mr-4 mb-2"
+                     th:if="${genderValue != null}">
+                    <input type="radio"
+                           th:field="*{gender}"
+                           th:value="${genderValue}"
+                           th:id="'gender-' + ${genderValue.name()}"
+                           class="form-check-input" />
+                    <label th:for="'gender-' + ${genderValue.name()}"
+                           class="form-check-label"
+                           th:text="${genderValue.russianString}"></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4 d-flex justify-content-end">
+            <button type="submit" class="btn btn-outline-success">Сохранить</button>
+            <button type="button" class="btn btn-outline-secondary" th:onclick="'window.location.href=\'/pets/' + ${animal.id} + '\';'">Отмена</button>
+        </div>
+    </form>
+</div>
+
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    const breedDataRaw = /*[[${breedsJson}]]*/ 'null'; // данные из Thymeleaf
+    let breedData;
+
+    try {
+        breedData = JSON.parse(breedDataRaw);
+    } catch (e) {
+        console.error("Ошибка парсинга breedDataRaw:", e);
+        breedData = {};
+    }
+
+    for (const key in breedData) {
+        if (typeof breedData[key] === "string") {
+            try {
+                breedData[key] = JSON.parse(breedData[key]);
+            } catch (e) {
+                console.warn(`Не удалось распарсить breedData[${key}] как JSON:`, e);
+            }
+        }
+    }
+
+    console.log("breedData:", breedData);
+
+    function updateBreeds() {
+        const typeId = document.getElementById("animalType").value.toString();
+        console.log("Выбран тип животного:", typeId);
+        console.log("breedData[typeId]:", breedData[typeId]);
+        console.log("typeof breedData[typeId]:", typeof breedData[typeId]);
+        console.log("Array.isArray(breedData[typeId]):", Array.isArray(breedData[typeId]));
+
+        const breedSelect = document.getElementById("breed");
+        breedSelect.innerHTML = '<option value="">Не указывать</option>';
+
+        if (Array.isArray(breedData[typeId])) {
+            breedData[typeId].forEach(breed => {
+                const option = document.createElement("option");
+                option.value = breed.id;
+                option.textContent = breed.name;
+                breedSelect.appendChild(option);
+            });
+        } else {
+            console.warn("breedData[typeId] не массив", breedData[typeId]);
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const animalTypeSelect = document.getElementById("animalType");
+        const breedSelect = document.getElementById("breed");
+
+        if (animalTypeSelect.value) {
+            updateBreeds();
+
+            const selectedBreedId = breedSelect.getAttribute("data-selected-id");
+            if (selectedBreedId) {
+                breedSelect.value = selectedBreedId;
+            }
+        }
+    });
+
+    function capitalizeFirstLetter(inputElement) {
+        let inputValue = inputElement.value;
+        if (inputValue.length > 0) {
+            let capitalizedValue = inputValue.charAt(0).toUpperCase() + inputValue.slice(1).toLowerCase();
+            inputElement.value = capitalizedValue;
+        }
+    }
+    /*]]>*/
+</script>
+
+</body>
+</html>

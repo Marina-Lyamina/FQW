@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Подробнее о питомце</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f1f3f6;
+            font-family: 'Segoe UI', sans-serif;
+            color: #2c2c2c;
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            padding: 0.5rem 1rem;
+        }
+
+        .navbar-brand {
+            color: #4b0082 !important;
+            font-weight: bold;
+            font-size: 1.4rem;
+            transition: color 0.3s ease;
+            margin-right: 1.2rem;
+        }
+
+        .navbar-brand:hover {
+            color: #6a0dad !important;
+            text-decoration: none;
+        }
+
+        .nav-link {
+            color: #333;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            color: #6a0dad;
+            text-decoration: none;
+        }
+
+        .pets-highlight {
+            border: 2px solid #6a0dad;
+            border-radius: 8px;
+            padding: 5px 12px;
+            background-color: #f2eaff;
+            color: #6a0dad !important;
+            font-weight: 600;
+        }
+
+        .pets-highlight i {
+            color: #6a0dad;
+        }
+
+        .card-info {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            height: 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #4b0082;
+            margin-top: 2rem;
+        }
+
+        .record-item, .appointment-item {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .record-info, .appointment-info {
+            flex-grow: 1;
+        }
+
+        .record-icon {
+            color: #6a0dad;
+            margin-right: 8px;
+        }
+
+        .appointment-icon {
+            color: #28a745;
+            margin-right: 8px;
+        }
+
+        .btn-custom {
+            border: 1px solid #6a0dad;
+            color: #6a0dad;
+            background-color: #f7f0ff;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .btn-custom:hover {
+            background-color: #e9dfff;
+            color: #4b0082;
+        }
+
+        .btn-custom i {
+            margin-right: 6px;
+        }
+
+        img.animal-photo {
+            object-fit: cover;
+            height: 100%;
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-details {
+            border: 1px solid #6a0dad;
+            background-color: transparent;
+            color: #6a0dad;
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-weight: 500;
+            transition: 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .btn-details:hover {
+            background-color: #e9dfff;
+            color: #4b0082;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            img.animal-photo {
+                height: auto;
+            }
+
+            .record-item, .appointment-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .btn-details {
+                align-self: flex-end;
+                margin-top: 8px;
+            }
+        }
+
+        a.back-link {
+            color: #6a0dad;
+            font-weight: 500;
+            display: inline-block;
+            margin-top: 2rem;
+        }
+
+        a.back-link:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+
+<body>
+<div th:replace="~{auth_clients/client_menu :: navigation}"></div>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <img class="animal-photo" th:src="|data:image/jpeg;base64,${filePhoto}|" />
+        </div>
+        <div class="col-md-8">
+            <div class="card-info">
+                <h4 class="mb-3" th:text="${animal.name}"></h4>
+                <p><strong>Вид:</strong> <span th:text="${animal.animalType != null ? animal.animalType.name : '-'}"></span></p>
+                <p><strong>Порода:</strong> <span th:text="${animal.breed != null ? animal.breed.name : '-'}"></span></p>
+                <p><strong>Пол:</strong> <span th:text="${animal.gender.getRussianString()}"></span></p>
+                <p><strong>Дата рождения:</strong> <span th:text="${#temporals.format(animal.birthday, 'dd.MM.yyyy')}"></span></p>
+
+                <div class="mt-3 d-flex flex-wrap gap-2">
+                    <button type="button" class="btn btn-custom mr-2 mb-2" data-toggle="modal" data-target="#updatePetModal">
+                        <i class="fas fa-pen"></i>Редактировать
+                    </button>
+                    <button type="button" class="btn btn-custom mr-2 mb-2" data-toggle="modal" data-target="#photoModal">
+                        <i class="fas fa-image"></i>Фото
+                    </button>
+                    <a class="btn btn-custom mb-2" th:href="@{/animals/delete/{id}(id=${animal.id})}">
+                        <i class="fas fa-trash"></i>Удалить
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h4 class="section-title">Записи на прием</h4>
+
+    <div th:if="${!hasFutureSchedules}" class="text-muted mb-3">
+        Нет записей на прием.
+    </div>
+
+    <div th:each="schedule : ${animal.schedules}" th:if="${hasFutureSchedules}" class="record-item">
+        <div class="record-info">
+            <span class="record-icon"><i class="fas fa-calendar-alt"></i></span>
+            <strong th:text="${#temporals.format(schedule.date, 'dd.MM.yyyy HH:mm')}"></strong><br>
+            <ul><li><span>
+<!--                <strong>Сотрудник:</strong> -->
+                <span th:text="${schedule.employee.user.getFIO()}"></span> (<span th:text="${#strings.toLowerCase(schedule.employee.position.name)}"></span>)</span></li></ul>
+        </div>
+    </div>
+
+
+    <h4 class="section-title">Все приемы</h4>
+
+    <div th:if="${!hasAppointments}" class="text-muted mb-3">
+        Нет приемов.
+    </div>
+
+<!--    <div th:each="appointment : ${animal.appointments}" th:if="${hasAppointments}" class="appointment-item">-->
+<!--        <div class="appointment-info">-->
+<!--            <span class="appointment-icon"><i class="fas fa-calendar-check"></i></span>-->
+<!--            <strong th:text="${#temporals.format(appointment.date, 'dd.MM.yyyy HH:mm')}"></strong><br>-->
+<!--&lt;!&ndash;            <span><strong>Сотрудники:</strong></span>&ndash;&gt;-->
+<!--            <ul>-->
+<!--                <li th:each="employee : ${appointment.employees}">-->
+<!--                    <span th:text="${employee.user.getFIO()}"></span> (<span th:text="${#strings.toLowerCase(employee.position.name)}"></span>)-->
+<!--                </li>-->
+<!--            </ul>-->
+<!--        </div>-->
+<!--        <div>-->
+<!--            <a class="btn-details mb-1" th:href="@{/appointments/details/{id}(id=${appointment.id})}">-->
+<!--                <i class="fas fa-info-circle"></i> Подробнее-->
+<!--            </a>-->
+<!--        </div>-->
+<!--    </div>-->
+
+    <div th:each="appointment : ${animal.appointments}" th:if="${hasAppointments}" class="appointment-item">
+        <div class="appointment-info">
+            <span class="appointment-icon"><i class="fas fa-calendar-check"></i></span>
+
+            <!-- Дата -->
+            <strong th:text="${#temporals.format(appointment.date, 'dd.MM.yyyy')}"></strong><br>
+
+            <!-- Время -->
+            <span class="text-muted small">
+            <span th:text="${#temporals.format(appointment.date, 'HH:mm')}"></span>
+            <span th:if="${appointment.endDate != null}">
+                - <span th:text="${#temporals.format(appointment.endDate, 'HH:mm')}"></span>
+            </span>
+            <span th:unless="${appointment.endDate != null}" class="text-warning">
+                - активен
+            </span>
+        </span><br>
+
+            <!-- Врачи -->
+            <div th:if="${!#lists.isEmpty(appointment.employees)}">
+                <strong>Врачи:</strong>
+                <ul class="doctors-list">
+                    <li th:each="employee : ${appointment.employees}">
+                        <span th:text="${employee.user.getFIO()}"></span>
+                        (<span th:text="${employee.position.name}"></span>)
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Диагноз -->
+            <div th:if="${appointment.diagnosis != null}">
+                <strong>Диагноз:</strong>
+                <span class="diagnosis-text" th:text="${appointment.diagnosis.name}"></span>
+            </div>
+
+            <!-- Услуги -->
+            <div th:if="${!#lists.isEmpty(appointment.procedures)}">
+                <strong>Услуги:</strong>
+                <ul class="service-list">
+                    <li th:each="procedure : ${appointment.procedures}">
+                        <span th:text="${procedure.name}"></span> -
+                        <span th:text="${procedure.price}"></span> ₽
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Кнопка "Подробнее" -->
+        <div>
+            <a class="btn-details mt-1" th:href="@{/appointments/details/{id}(id=${appointment.id})}">
+                <i class="fas fa-info-circle"></i> Подробнее
+            </a>
+        </div>
+    </div>
+
+    <a class="back-link" th:href="@{/pets}">
+        ← Назад к списку
+    </a>
+</div>
+
+<!-- Модальное окно - обновить фото -->
+<div class="modal fade" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="photoModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form method="post" th:action="@{'/pets/updatePhoto/' + ${animal.id}}" enctype="multipart/form-data" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="photoModalLabel">Загрузка нового фото</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Закрыть">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="file" name="image" accept="image/*" class="form-control-file" required>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-outline-success">Сохранить</button>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Отмена</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Модальное окно - обновить данные  -->
+<div class="modal fade" id="updatePetModal" tabindex="-1" aria-labelledby="updatePetModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <form id="updatePetForm" th:object="${animal}">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updatePetModalLabel">Обновление информации о питомце</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Закрыть">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <input type="hidden" th:field="*{id}" />
+
+                    <div class="form-group mb-3">
+                        <label for="name">Кличка:<span class="text-danger">*</span></label>
+                        <input type="text" id="name" th:field="*{name}" class="form-control" />
+                        <div class="text-danger" id="error-name"></div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="animalType">Вид животного:</label>
+                        <select id="animalType" th:field="*{animalType}" class="form-control" onchange="updateBreeds()">
+                            <option value="">Не указывать</option>
+                            <option th:each="type : ${animalTypes}" th:value="${type.id}" th:text="${type.name}"></option>
+                        </select>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="breed">Порода:</label>
+                        <select id="breed" name="breed" th:field="*{breed}" class="form-control"
+                                th:attr="data-selected-id=${animal.breed != null ? animal.breed.id : ''}">
+                            <option value="">Не указывать</option>
+                            <!-- Опции породы обновляются через JS -->
+                        </select>
+                        <div class="text-danger" th:if="${#fields.hasErrors('breed')}" th:errors="*{breed}"></div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="birthday">Дата рождения:</label>
+                        <input type="date" id="birthday" th:field="*{birthday}" class="form-control"/>
+                        <div class="text-danger" th:if="${#fields.hasErrors('birthday')}" th:errors="*{birthday}"></div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="mb-2 d-block">Пол:</label>
+                        <div class="form-radio-group px-2">
+                            <div class="form-check form-check-inline me-4 mb-2"
+                                 th:each="genderValue : ${T(ru.marinalyamina.vetclinic.models.enums.AnimalGender).values()}"
+                                 th:if="${genderValue != null}">
+                                <input type="radio"
+                                       th:field="*{gender}"
+                                       th:value="${genderValue}"
+                                       th:id="'gender-' + ${genderValue.name()}"
+                                       class="form-check-input" />
+                                <label th:for="'gender-' + ${genderValue.name()}"
+                                       class="form-check-label"
+                                       th:text="${genderValue.russianString}"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="text-muted mb-0"><span class="text-danger">*</span> Обязательные поля</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-success" onclick="submitPetUpdate()">Сохранить</button>
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Отмена</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script th:inline="javascript">
+
+    /*<![CDATA[*/
+    const breedDataRaw = /*[[${breedsJson}]]*/ 'null'; // данные из Thymeleaf
+    let breedData;
+
+    try {
+        breedData = JSON.parse(breedDataRaw);
+    } catch (e) {
+        console.error("Ошибка парсинга breedDataRaw:", e);
+        breedData = {};
+    }
+
+    for (const key in breedData) {
+        if (typeof breedData[key] === "string") {
+            try {
+                breedData[key] = JSON.parse(breedData[key]);
+            } catch (e) {
+                console.warn(`Не удалось распарсить breedData[${key}] как JSON:`, e);
+            }
+        }
+    }
+
+    console.log("breedData:", breedData);
+
+    function updateBreeds() {
+        const typeId = document.getElementById("animalType").value.toString();
+        console.log("Выбран тип животного:", typeId);
+        console.log("breedData[typeId]:", breedData[typeId]);
+        console.log("typeof breedData[typeId]:", typeof breedData[typeId]);
+        console.log("Array.isArray(breedData[typeId]):", Array.isArray(breedData[typeId]));
+
+        const breedSelect = document.getElementById("breed");
+        breedSelect.innerHTML = '<option value="">Не указывать</option>';
+
+        if (Array.isArray(breedData[typeId])) {
+            breedData[typeId].forEach(breed => {
+                const option = document.createElement("option");
+                option.value = breed.id;
+                option.textContent = breed.name;
+                breedSelect.appendChild(option);
+            });
+        } else {
+            console.warn("breedData[typeId] не массив", breedData[typeId]);
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const animalTypeSelect = document.getElementById("animalType");
+        const breedSelect = document.getElementById("breed");
+
+        if (animalTypeSelect.value) {
+            updateBreeds();
+
+            const selectedBreedId = breedSelect.getAttribute("data-selected-id");
+            if (selectedBreedId) {
+                breedSelect.value = selectedBreedId;
+            }
+        }
+    });
+
+    function submitPetUpdate() {
+        const dto = {
+            id: document.querySelector('#updatePetForm input[name="id"]').value,
+            name: document.querySelector('#updatePetForm input[name="name"]').value,
+            birthday: document.querySelector('#updatePetForm input[name="birthday"]').value,
+            gender: document.querySelector('#updatePetForm input[name="gender"]:checked')?.value || null,
+            breedId: document.getElementById('breed').value || null,
+            animalTypeId: document.getElementById('animalType').value || null
+        };
+
+        fetch('/pets/update', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(dto)
+        })
+        .then(async response => {
+            if (!response.ok) {
+                const errorData = await response.json();
+                showValidationErrors(errorData);
+            } else {
+                const result = await response.json();
+                window.location.href = '/pets/' + result.id;
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка при отправке формы:', error);
+        });
+    }
+
+
+    function showValidationErrors(errors) {
+        document.querySelectorAll('.text-danger').forEach(e => e.innerText = '');
+
+        for (const [field, message] of Object.entries(errors)) {
+            const errorDiv = document.getElementById('error-' + field);
+            if (errorDiv) {
+                errorDiv.innerText = message;
+            }
+        }
+    }
+
+
+    function capitalizeFirstLetter(inputElement) {
+        let inputValue = inputElement.value;
+        if (inputValue.length > 0) {
+            let capitalizedValue = inputValue.charAt(0).toUpperCase() + inputValue.slice(1).toLowerCase();
+            inputElement.value = capitalizedValue;
+        }
+    }
+    /*]]>*/
+
+</script>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

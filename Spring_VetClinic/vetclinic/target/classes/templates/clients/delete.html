@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Удаление</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+<div  th:replace="~{main_menu :: navigation}"></div>
+
+<div class="container">
+    <h1 class="my-4">Удаление клиента</h1>
+
+    <!-- Если у клиента есть питомцы, выводим сообщение и не даем удалить -->
+    <div th:if="${hasPets}">
+        <p class="text-danger">
+            Невозможно удалить клиента, так как у него есть питомцы.<br>
+        </p>
+        <div class="alert alert-warning">
+            <strong>ФИО:</strong> <span th:text="${client.user.getFIO()}"></span><br>
+            <strong>Дата рождения:</strong> <span th:text="${#temporals.format(client.user.birthday, 'dd.MM.yyyy')}"></span><br>
+            <strong>Номер телефона:</strong> <span th:text="${client.user.phone}"></span><br>
+            <strong>Email:</strong> <span th:text="${client.user.email}"></span>
+        </div>
+        <a class="link-dark" th:href="@{/clients/all}">Назад к списку</a>
+    </div>
+
+    <!-- Если у клиента нет питомцев, показываем кнопку удаления -->
+    <div th:if="${!hasPets}">
+        <p>Вы действительно хотите удалить данного клиента?</p>
+
+        <div class="alert alert-warning">
+            <strong>ФИО:</strong> <span th:text="${client.user.getFIO()}"></span><br>
+            <strong>Дата рождения:</strong> <span th:text="${#temporals.format(client.user.birthday, 'dd.MM.yyyy')}"></span><br>
+            <strong>Номер телефона:</strong> <span th:text="${client.user.phone}"></span><br>
+            <strong>Email:</strong> <span th:text="${client.user.email}"></span>
+        </div>
+        <form th:action="@{/clients/delete/{id}(id=${client.id})}" method="post">
+            <button type="submit" class="btn btn-outline-danger">Удалить</button>
+            <button type="button" class="btn btn-outline-secondary" onclick="window.location.href='/clients/all'">Отмена</button>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>

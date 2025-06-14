@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Породы</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div  th:replace="~{main_menu :: navigation}"></div>
+
+<div class="container mt-4">
+    <h1 class="mb-4">Породы</h1>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+    <form class="form-inline mb-3">
+        <select class="form-control" id="animalTypeSelect">
+            <option value="">Все виды</option>
+            <option th:each="type : ${animalTypes}"
+                    th:value="${type.id}"
+                    th:text="${type.name}"
+                    th:selected="${type.id == selectedTypeId}">
+            </option>
+        </select>
+
+        <input type="text" id="searchInput" class="form-control ml-2" placeholder="Поиск по названию"
+               th:value="${keyword}" />
+
+        <a th:if = "${isAdmin == true}" href="/breeds/create" class="btn btn-outline-success ml-auto">Добавить</a>
+    </form>
+
+    <div id="breedTable" th:fragment="tableContent">
+        <table class="table table-sm table-hover table-bordered align-middle">
+            <thead class="thead-light">
+            <tr>
+                <th style="width: 5%;">#</th>
+                <th style="width: 35%;">Название</th>
+                <th style="width: 35%;">Вид животного</th>
+                <th th:if = "${isAdmin == true}" style="width: 25%;" class="text-right">Действия</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="breed, iterStat : ${breeds}">
+                <td th:text="${iterStat.count}"></td>
+                <td th:text="${breed.name}"></td>
+                <td th:text="${breed.animalType.name}"></td>
+                <td th:if = "${isAdmin == true}" class="text-right">
+                    <a th:if = "${isAdmin == true}" th:href="@{/breeds/update/{id}(id=${breed.id})}" class="btn btn-sm btn-outline-primary">Редактировать</a>
+                    <a th:if = "${isAdmin == true}"  th:href="@{/breeds/delete/{id}(id=${breed.id})}" class="btn btn-sm btn-outline-danger">Удалить</a>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(breeds)}">
+                <td colspan="4" class="text-center text-muted">Нет совпадений</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    const typeSelect = document.getElementById("animalTypeSelect");
+    const searchInput = document.getElementById("searchInput");
+    const tableContainer = document.getElementById("breedTable");
+
+    function updateTable() {
+        const typeId = typeSelect.value;
+        const keyword = searchInput.value;
+
+        const params = new URLSearchParams();
+        if (typeId) params.append("animalTypeId", typeId);
+        if (keyword) params.append("keyword", keyword);
+
+        fetch("/breeds/table?" + params.toString())
+            .then(res => res.text())
+            .then(html => {
+                tableContainer.innerHTML = html;
+            });
+    }
+
+    typeSelect.addEventListener("change", updateTable);
+    searchInput.addEventListener("input", () => {
+        clearTimeout(searchInput._timeout);
+        searchInput._timeout = setTimeout(updateTable, 300); // debounce
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,449 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+ Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="1.1.1" use-changelog="false" max-obj-count="15"
+	 last-position="0,-100" last-zoom="0.65" scene-rect="-140,-480,2426.95,1734.72"
+	 default-schema="public" default-owner="postgres"
+	 layers="Default layer"
+	 active-layers="0"
+	 layer-name-colors="#000000"
+	 layer-rect-colors="#b4b4b4"
+	 show-layer-names="false" show-layer-rects="false">
+<database name="new_database" is-template="false" allow-conns="true">
+</database>
+
+<schema name="public" layers="0" fill-color="#e1e1e1" name-color="#000000" sql-disabled="true">
+</schema>
+
+<table name="users" layers="0" collapse-mode="2" max-obj-count="10" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="820" y="-80"/>
+	<column name="id" not-null="true"
+	 identity-type="ALWAYS" start="1" increment="1" min-value="0" max-value="9223372036854775807" cache="1">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="surname" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="patronymic">
+		<type name="text" length="0"/>
+	</column>
+	<column name="birthday">
+		<type name="date" length="0"/>
+	</column>
+	<column name="email">
+		<type name="text" length="0"/>
+	</column>
+	<column name="phone">
+		<type name="text" length="0"/>
+	</column>
+	<column name="login" not-null="true">
+		<type name="varchar" length="64"/>
+	</column>
+	<column name="password" not-null="true">
+		<type name="varchar" length="64"/>
+	</column>
+	<constraint name="users_pk" type="pk-constr" table="public.users">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="files" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="880" y="640"/>
+	<column name="id" not-null="true"
+	 identity-type="ALWAYS" start="1" increment="1" min-value="0" max-value="9223372036854775807" cache="1">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="path" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<constraint name="files_pk" type="pk-constr" table="public.files">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="positions" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1600" y="20"/>
+	<column name="id" not-null="true"
+	 identity-type="ALWAYS" start="1" increment="1" min-value="0" max-value="9223372036854775807" cache="1">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<constraint name="positions_pk" type="pk-constr" table="public.positions">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="employees" layers="0" collapse-mode="2" max-obj-count="7" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1400" y="320"/>
+	<column name="id" not-null="true"
+	 identity-type="ALWAYS" start="1" increment="1" min-value="0" max-value="9223372036854775807" cache="1">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="description">
+		<type name="text" length="0"/>
+	</column>
+	<constraint name="employees_pk" type="pk-constr" table="public.employees">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+
+	<customidxs object-type="column">
+		<object name="main_image_id" index="2"/>
+		<object name="position_id" index="3"/>
+		<object name="user_id" index="1"/>
+	</customidxs>
+	<customidxs object-type="constraint">
+		<object name="employees_uq" index="2"/>
+		<object name="employees_uq1" index="5"/>
+		<object name="files_fk" index="4"/>
+		<object name="positions_fk" index="3"/>
+		<object name="users_fk" index="1"/>
+	</customidxs></table>
+
+<table name="clients" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="220" y="360"/>
+	<column name="id" not-null="true"
+	 identity-type="ALWAYS" start="1" increment="1" min-value="0" max-value="9223372036854775807" cache="1">
+		<type name="bigint" length="0"/>
+	</column>
+	<constraint name="clients_pk" type="pk-constr" table="public.clients">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<relationship name="clients_has_one_users" type="rel11" layers="0"
+	 src-col-pattern="user_id"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#ffff7f"
+	 src-table="public.users"
+	 dst-table="public.clients"
+	 src-required="true" dst-required="false"
+	upd-action="CASCADE"
+	del-action="CASCADE">
+	<label ref-type="name-label">
+		<position x="18.2018" y="-19.053"/>
+	</label>
+</relationship>
+
+<table name="animals" layers="0" collapse-mode="2" max-obj-count="9" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="300" y="900"/>
+	<column name="id" not-null="true"
+	 identity-type="ALWAYS" start="1" increment="1" min-value="0" max-value="9223372036854775807" cache="1">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="birthday">
+		<type name="date" length="0"/>
+	</column>
+	<column name="gender">
+		<type name="smallint" length="0"/>
+	</column>
+	<column name="breed">
+		<type name="text" length="0"/>
+	</column>
+	<constraint name="animal_pk" type="pk-constr" table="public.animals">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+
+	<customidxs object-type="column">
+		<object name="animal_type_id" index="6"/>
+		<object name="client_id" index="7"/>
+		<object name="main_image_id" index="5"/>
+	</customidxs>
+	<customidxs object-type="constraint">
+		<object name="animal_types_fk" index="1"/>
+		<object name="animals_uq" index="4"/>
+		<object name="clients_fk" index="2"/>
+		<object name="files_fk" index="3"/>
+	</customidxs></table>
+
+<table name="animal_types" layers="0" collapse-mode="2" max-obj-count="2" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="-120" y="560"/>
+	<column name="id" not-null="true"
+	 identity-type="ALWAYS" start="1" increment="1" min-value="0" max-value="9223372036854775807" cache="1">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<constraint name="animal_types_pk" type="pk-constr" table="public.animal_types">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<relationship name="animal_types_has_many_animals" type="rel1n" layers="0"
+	 src-col-pattern="animal_type_id"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#55aaff"
+	 src-table="public.animal_types"
+	 dst-table="public.animals"
+	 src-required="true" dst-required="false"
+	upd-action="CASCADE"
+	del-action="NO ACTION">
+	<label ref-type="name-label">
+		<position x="4.26371" y="-31.376"/>
+	</label>
+</relationship>
+
+<relationship name="clients_has_many_animals" type="rel1n" layers="0"
+	 src-col-pattern="client_id"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#55aaff"
+	 src-table="public.clients"
+	 dst-table="public.animals"
+	 src-required="true" dst-required="false"
+	upd-action="CASCADE"
+	del-action="CASCADE">
+	<label ref-type="name-label">
+		<position x="0" y="0"/>
+	</label>
+</relationship>
+
+<table name="appointments" layers="0" collapse-mode="2" max-obj-count="7" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1320" y="920"/>
+	<column name="id" not-null="true"
+	 identity-type="ALWAYS" start="1" increment="1" min-value="0" max-value="9223372036854775807" cache="1">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="date" not-null="true">
+		<type name="timestamp" length="0"/>
+	</column>
+	<column name="reason">
+		<type name="text" length="0"/>
+	</column>
+	<column name="diagnosis">
+		<type name="text" length="0"/>
+	</column>
+	<column name="medical_prescription">
+		<type name="text" length="0"/>
+	</column>
+	<constraint name="appointments_pk" type="pk-constr" table="public.appointments">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+
+	<customidxs object-type="column">
+		<object name="animal_id" index="5"/>
+	</customidxs>
+	<customidxs object-type="constraint">
+		<object name="animals_fk" index="1"/>
+	</customidxs></table>
+
+<table name="procedures" layers="0" collapse-mode="2" max-obj-count="3" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="1820" y="780"/>
+	<column name="id" not-null="true"
+	 identity-type="ALWAYS" start="1" increment="1" min-value="0" max-value="9223372036854775807" cache="1">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="name" not-null="true">
+		<type name="text" length="0"/>
+	</column>
+	<column name="price" not-null="true">
+		<type name="decimal" length="0"/>
+	</column>
+	<constraint name="vet_services_pk" type="pk-constr" table="public.procedures">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<relationship name="animals_has_many_visits" type="rel1n" layers="0"
+	 src-col-pattern="animal_id"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#55aaff"
+	 src-table="public.animals"
+	 dst-table="public.appointments"
+	 src-required="true" dst-required="false"
+	upd-action="CASCADE"
+	del-action="CASCADE">
+	<label ref-type="name-label">
+		<position x="57.8622" y="-51.453"/>
+	</label>
+</relationship>
+
+<relationship name="employees_has_one_users" type="rel11" layers="0"
+	 src-col-pattern="user_id"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#ffff7f"
+	 src-table="public.users"
+	 dst-table="public.employees"
+	 src-required="true" dst-required="false"
+	upd-action="CASCADE"
+	del-action="CASCADE">
+	<label ref-type="name-label">
+		<position x="12.5545" y="-5.92641"/>
+	</label>
+</relationship>
+
+<relationship name="positions_has_many_employees" type="rel1n" layers="0"
+	 src-col-pattern="position_id"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#55aaff"
+	 src-table="public.positions"
+	 dst-table="public.employees"
+	 src-required="true" dst-required="false"
+	upd-action="CASCADE"
+	del-action="RESTRICT">
+	<label ref-type="name-label">
+		<position x="12.3047" y="-41.7145"/>
+	</label>
+</relationship>
+
+<relationship name="many_appointments_has_many_procedures" type="relnn" layers="0"
+	 src-col-pattern="appointment_id" dst-col-pattern="procedure_id"
+	 pk-pattern="{gt}_pk" uq-pattern="{gt}_uq"
+	 src-fk-pattern="{st}_fk" dst-fk-pattern="{dt}_fk"
+	 pk-col-pattern="id"
+	 custom-color="#aa0000"
+	 src-table="public.appointments"
+	 dst-table="public.procedures"
+	 src-required="false" dst-required="false"
+	 table-name="many_appointments_has_many_procedures"
+	upd-action="CASCADE"
+	del-action="CASCADE">
+	<label ref-type="name-label">
+		<position x="0.727432" y="-40.6251"/>
+	</label>
+</relationship>
+
+<relationship name="many_appointments_has_many_employees" type="relnn" layers="0"
+	 src-col-pattern="appointment_id" dst-col-pattern="employee_id"
+	 pk-pattern="{gt}_pk" uq-pattern="{gt}_uq"
+	 src-fk-pattern="{st}_fk" dst-fk-pattern="{dt}_fk"
+	 pk-col-pattern="id"
+	 custom-color="#aa0000"
+	 src-table="public.appointments"
+	 dst-table="public.employees"
+	 src-required="false" dst-required="false"
+	 table-name="many_appointments_has_many_employees"
+	upd-action="CASCADE"
+	del-action="CASCADE">
+	<label ref-type="name-label">
+		<position x="10.2899" y="-26.7222"/>
+	</label>
+</relationship>
+
+<table name="schedules" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="public"/>
+	<role name="postgres"/>
+	<position x="640" y="400"/>
+	<column name="id" not-null="true"
+	 identity-type="ALWAYS" start="1" increment="1" min-value="0" max-value="9223372036854775807" cache="1">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="date" not-null="true">
+		<type name="timestamp" length="0"/>
+	</column>
+	<constraint name="schedules_pk" type="pk-constr" table="public.schedules">
+		<columns names="id" ref-type="src-columns"/>
+	</constraint>
+
+	<customidxs object-type="column">
+		<object name="employee_id" index="1"/>
+	</customidxs>
+	<customidxs object-type="constraint">
+		<object name="employees_fk" index="1"/>
+	</customidxs></table>
+
+<relationship name="employees_has_many_schedules" type="rel1n" layers="0"
+	 src-col-pattern="employee_id"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#55aaff"
+	 src-table="public.employees"
+	 dst-table="public.schedules"
+	 src-required="true" dst-required="false"
+	upd-action="CASCADE"
+	del-action="RESTRICT">
+	<label ref-type="name-label">
+		<position x="0" y="0"/>
+	</label>
+</relationship>
+
+<relationship name="animals_has_one_files" type="rel11" layers="0"
+	 src-col-pattern="main_image_id"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#ffff7f"
+	 src-table="public.files"
+	 dst-table="public.animals"
+	 src-required="false" dst-required="false"
+	upd-action="CASCADE"
+	del-action="SET NULL">
+	<label ref-type="name-label">
+		<position x="0" y="0"/>
+	</label>
+</relationship>
+
+<relationship name="employees_has_one_files" type="rel11" layers="0"
+	 src-col-pattern="main_image_id"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#ffff7f"
+	 src-table="public.files"
+	 dst-table="public.employees"
+	 src-required="false" dst-required="false"
+	upd-action="CASCADE"
+	del-action="SET NULL">
+	<label ref-type="name-label">
+		<position x="0" y="0"/>
+	</label>
+</relationship>
+
+<relationship name="many_files_has_many_appointments" type="relnn" layers="0"
+	 src-col-pattern="file_id" dst-col-pattern="document_id"
+	 pk-pattern="{gt}_pk" uq-pattern="{gt}_uq"
+	 src-fk-pattern="{st}_fk" dst-fk-pattern="{dt}_fk"
+	 pk-col-pattern="id"
+	 custom-color="#aa0000"
+	 src-table="public.files"
+	 dst-table="public.appointments"
+	 src-required="false" dst-required="false"
+	 table-name="many_files_has_many_appointments"
+	upd-action="CASCADE"
+	del-action="CASCADE">
+	<label ref-type="name-label">
+		<position x="-4.29384" y="-50.4526"/>
+	</label>
+</relationship>
+
+<relationship name="animals_has_many_schedules" type="rel1n" layers="0"
+	 src-col-pattern="animal_id"
+	 pk-pattern="{dt}_pk" uq-pattern="{dt}_uq"
+	 src-fk-pattern="{st}_fk"
+	 custom-color="#55aaff"
+	 src-table="public.animals"
+	 dst-table="public.schedules"
+	 src-required="false" dst-required="false"/>
+
+</dbmodel>

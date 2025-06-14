@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Формирование расписания</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/locales/ru.global.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+        #calendar {
+          width: 100%;
+        }
+
+        /* Уменьшаем вертикаль */
+        .fc-timegrid-slot {
+          height: 1.5em !important;
+        }
+
+        .fc-event-free {
+          background-color: #ffc107 !important;
+          border-color: #ffc107 !important;
+        }
+
+        .fc-event-booked {
+          background-color: #28a745 !important;
+          border-color: #28a745 !important;
+        }
+
+        .legend {
+          display: flex;
+          gap: 1rem;
+          margin: 1rem 0;
+        }
+
+        .legend-item {
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+        }
+
+        .legend-color {
+          width: 20px;
+          height: 20px;
+          border-radius: 4px;
+          display: inline-block;
+        }
+
+        .free-color {
+          background-color: #ffc107;
+        }
+
+        .booked-color {
+          background-color: #28a745;
+        }
+
+        .form-section {
+          background-color: #f8f9fa;
+          padding: 20px;
+          border-radius: 8px;
+          margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+<div  th:replace="~{main_menu :: navigation}"></div>
+
+<div class="container">
+    <h1 class="my-4">Формирование расписания</h1>
+
+    <!-- Выбор сотрудника -->
+    <div class="form-group position-relative">
+        <label for="employeeInput">Сотрудник:</label>
+        <input list="employeeList" id="employeeInput" class="form-control pr-5" placeholder="Введите имя или выберите">
+        <button id="clearEmployeeInput" type="button" class="btn btn-sm btn-outline-secondary position-absolute"
+                style="top: 36px; right: 10px; z-index: 10;" title="Очистить выбор">
+            &times;
+        </button>
+        <datalist id="employeeList">
+            <option th:each="employee : ${employees}"
+                    th:value="${employee.user.getFIO()} + ' (' + ${employee.position.name} + ')'"
+                    th:data-id="${employee.id}"></option>
+        </datalist>
+    </div>
+
+    <!-- Легенда -->
+    <div class="legend">
+        <div class="legend-item">
+            <span class="legend-color free-color"></span> Свободный слот
+        </div>
+        <div class="legend-item">
+            <span class="legend-color booked-color"></span> Запись на прием
+        </div>
+    </div>
+
+    <div id="calendar" class="mb-4"></div>
+
+    <!-- Форма добавления одного слота -->
+    <div class="form-section">
+        <h4>Добавить один свободный слот</h4>
+        <form id="singleSlotForm" class="row g-3 mb-3">
+            <div class="col-md-4">
+                <label for="singleSlotDate">Дата:</label>
+                <input type="date" class="form-control" id="singleSlotDate" required>
+            </div>
+            <div class="col-md-3">
+                <label for="singleSlotTime">Время:</label>
+                <input type="time" class="form-control" id="singleSlotTime" required>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-success w-100">Добавить</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Форма добавления множественных слотов -->
+    <div class="form-section">
+        <h4>Добавить несколько свободных слотов</h4>
+        <form id="slotForm" class="row g-3 mb-4">
+            <div class="col-md-3">
+                <label for="slotDate">Дата:</label>
+                <input type="date" class="form-control" id="slotDate" required>
+            </div>
+            <div class="col-md-2">
+                <label for="startTime">С:</label>
+                <input type="time" class="form-control" id="startTime" value="08:00" required>
+            </div>
+            <div class="col-md-2">
+                <label for="endTime">До:</label>
+                <input type="time" class="form-control" id="endTime" value="16:00" required>
+            </div>
+            <div class="col-md-3">
+                <label for="interval">Периодичность (в минутах):</label>
+                <input type="number" class="form-control" id="interval" value="60" min="5" step="5" required>
+            </div>
+            <div class="col-md-2 d-flex align-items-end">
+                <button type="submit" class="btn btn-success w-100">Добавить</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal подтверждения удаления -->
+<div class="modal fade" id="deleteSlotModal" tabindex="-1" aria-labelledby="deleteSlotModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteSlotModalLabel">Удаление свободного слота</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Закрыть">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Вы уверены, что хотите удалить слот?</p>
+                <p><strong id="slotTimeToDelete"></strong></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteSlot">Удалить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    const employees = [];
+    let calendar;
+    let slotToDelete = null;
+
+    function toMinutes(t) {
+        const [h, m] = t.split(":").map(Number);
+        return h * 60 + m;
+    }
+
+    function toTimeStr(mins) {
+        const h = String(Math.floor(mins / 60)).padStart(2, '0');
+        const m = String(mins % 60).padStart(2, '0');
+        return `${h}:${m}`;
+    }
+
+    function formatDateTime(dateObj) {
+        return dateObj.toLocaleString('ru-RU', {
+            dateStyle: 'medium',
+            timeStyle: 'short'
+        });
+    }
+
+    function loadScheduleForEmployee(employeeId) {
+        fetch(`/web_schedules/vet/${employeeId}`)
+            .then(res => res.json())
+            .then(data => {
+                const events = data.map(event => {
+                    const isFree = !event.title || event.title.trim() === '';
+                    return {
+                        id: event.id,
+                        title: event.title,
+                        start: event.start,
+                        className: isFree ? 'fc-event-free' : 'fc-event-booked'
+                    };
+                });
+                calendar.removeAllEvents();
+                calendar.addEventSource(events);
+            });
+    }
+
+    function addSingleSlot(employeeId, datetime) {
+        const slots = [{ start: datetime }];
+
+        fetch(`/web_schedules/vet/${employeeId}/add-free-slots`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(slots)
+        }).then(res => {
+            if (res.ok) {
+                loadScheduleForEmployee(employeeId);
+            } else {
+                res.text().then(errorText => {
+                    alert("Ошибка при добавлении слота: " + errorText);
+                });
+            }
+        }).catch(() => {
+            alert("Ошибка запроса при добавлении слота");
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Собираем сотрудников
+        $('#employeeList option').each(function () {
+            employees.push({
+                label: $(this).val(),
+                id: $(this).attr('data-id')
+            });
+        });
+
+        $('#clearEmployeeInput').on('click', function () {
+            $('#employeeInput').val('');
+            calendar.removeAllEvents();
+        });
+
+        $('#employeeInput').on('change', function () {
+            const selectedText = $(this).val();
+            const selected = employees.find(e => e.label === selectedText);
+            if (selected) loadScheduleForEmployee(selected.id);
+        });
+
+        // Инициализация календаря
+        calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+            locale: 'ru',
+            timeZone: 'local',
+            firstDay: 1,
+            initialView: 'timeGridDay',
+            headerToolbar: {
+                left: 'prev,next',
+                center: 'title',
+                right: 'timeGridDay,timeGridWeek,dayGridMonth'
+            },
+            buttonText: {
+                today: '',
+                day: 'День',
+                week: 'Неделя',
+                month: 'Месяц'
+            },
+            allDaySlot: false,
+            slotMinTime: "08:00:00",
+            slotMaxTime: "20:00:00",
+            nowIndicator: true,
+            editable: false,
+            eventTimeFormat: { hour: '2-digit', minute: '2-digit', hour12: false },
+
+            eventDidMount: function (info) {
+                const isFree = info.event.classNames.includes('fc-event-free');
+                if (!isFree) {
+                    const titleEl = info.el.querySelector('.fc-event-title');
+                    if (titleEl) titleEl.style.display = 'none';
+                }
+                if (info.event.title) {
+                    info.el.setAttribute('title', info.event.title);
+                }
+            },
+
+            eventClick: function (info) {
+                const isFree = info.event.classNames.includes('fc-event-free');
+                const selectedText = $('#employeeInput').val();
+                const selected = employees.find(e => e.label === selectedText);
+                if (!isFree || !selected) return;
+
+                slotToDelete = {
+                    id: info.event.id,
+                    event: info.event,
+                    employeeId: selected.id,
+                    dateDisplay: formatDateTime(info.event.start)
+                };
+
+                $('#slotTimeToDelete').text(slotToDelete.dateDisplay);
+                $('#deleteSlotModal').modal('show');
+            }
+        });
+
+        calendar.render();
+
+        // Подтверждение удаления
+        $('#confirmDeleteSlot').on('click', function () {
+            if (!slotToDelete) return;
+
+            fetch(`/web_schedules/vet/${slotToDelete.employeeId}/remove-slot/${slotToDelete.id}`, {
+                method: 'DELETE'
+            }).then(res => {
+                if (res.ok) {
+                    slotToDelete.event.remove();
+                    $('#deleteSlotModal').modal('hide');
+                } else {
+                    res.text().then(errorText => {
+                        alert("Ошибка при удалении: " + errorText);
+                    });
+                }
+            }).catch(() => alert("Ошибка запроса при удалении"));
+        });
+
+        // Добавление одного слота
+        $('#singleSlotForm').on('submit', function (e) {
+            e.preventDefault();
+            const selectedText = $('#employeeInput').val();
+            const selected = employees.find(e => e.label === selectedText);
+            if (!selected) return alert("Выберите сотрудника");
+
+            const date = $('#singleSlotDate').val();
+            const time = $('#singleSlotTime').val();
+
+            if (!date || !time) {
+                return alert("Заполните дату и время");
+            }
+
+            const datetime = `${date}T${time}:00`;
+            addSingleSlot(selected.id, datetime);
+
+            // Очищаем форму
+            $('#singleSlotDate').val('');
+            $('#singleSlotTime').val('');
+        });
+
+        // Добавление множественных слотов
+        $('#slotForm').on('submit', function (e) {
+            e.preventDefault();
+            const selectedText = $('#employeeInput').val();
+            const selected = employees.find(e => e.label === selectedText);
+            if (!selected) return alert("Выберите сотрудника");
+
+            const date = $('#slotDate').val();
+            const from = $('#startTime').val();
+            const to = $('#endTime').val();
+            const step = parseInt($('#interval').val());
+
+            const startMinutes = toMinutes(from);
+            const endMinutes = toMinutes(to);
+            const slots = [];
+
+            for (let t = startMinutes; t < endMinutes; t += step) {
+                const time = toTimeStr(t);
+                const datetime = `${date}T${time}:00`;
+                slots.push({ start: datetime });
+            }
+
+            fetch(`/web_schedules/vet/${selected.id}/add-free-slots`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(slots)
+            }).then(res => {
+                if (res.ok) {
+                    loadScheduleForEmployee(selected.id);
+                } else {
+                    res.text().then(errorText => {
+                        alert("Ошибка при добавлении слотов: " + errorText);
+                    });
+                }
+            }).catch(() => {
+                alert("Ошибка запроса при добавлении слотов");
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

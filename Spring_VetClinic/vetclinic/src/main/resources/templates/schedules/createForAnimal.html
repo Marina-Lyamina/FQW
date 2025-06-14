@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Добавление</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+<div  th:replace="~{main_menu :: navigation}"></div>
+
+<div class="container">
+  <h1 class="my-4">Добавление записи на прием</h1>
+  <form th:action="@{/schedules/createForAnimal}" th:object="${schedule}" method="post">
+    <input type="hidden" th:field="*{animal}"/>
+    <input type="hidden" th:field="*{employee}"/>
+
+    <p><strong>Клиент:</strong> <span th:text="${schedule.animal.client.user.getFIO()}"></span></p>
+    <p><strong>Питомец:</strong> <span th:text="${schedule.animal.name}"></span></p>
+    <p><strong>Врач:</strong> <span th:text="${schedule.employee.user.getFIO()}"></span></p>
+
+    <table class="table table-bordered">
+      <thead class="thead-light">
+      <tr>
+        <th>#</th>
+        <th style="width: 90%;">Дата</th>
+        <th> </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="freeSchedule, iterStat : ${freeEmployeeSchedules}">
+        <td th:text="${iterStat.count}"></td>
+        <td th:text="${#temporals.format(freeSchedule.date, 'dd.MM.yyyy HH:mm')}"></td>
+        <td class="text-nowrap text-center">
+          <label>
+            <input type="radio" th:field="*{id}" th:value="${freeSchedule.id}"/>
+          </label>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="text-danger mb-4" th:if="${#fields.hasErrors('id')}" th:errors="*{id}"></div>
+    <button type="submit" class="btn btn-outline-success">Сохранить</button>
+    <button type="button" class="btn btn-outline-secondary" th:onclick="'window.location.href=\'/animals/details/' + ${schedule.animal.id} + '\';'">
+      Отмена
+    </button>
+
+  </form>
+</div>
+
+<script>
+  function capitalizeFirstLetter(inputElement) {
+      let inputValue = inputElement.value;
+      if (inputValue.length > 0) {
+          let capitalizedValue = inputValue.charAt(0).toUpperCase() + inputValue.slice(1).toLowerCase();
+          inputElement.value = capitalizedValue;
+      }
+  }
+</script>
+</body>
+</html>

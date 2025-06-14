@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Удаление</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+<div  th:replace="~{main_menu :: navigation}"></div>
+
+<div class="container">
+    <h1 class="my-4">Удаление услуги</h1>
+
+    <!-- Если есть связанные записи -->
+    <div th:if="${hasAppointments}">
+        <p class="text-danger">
+            Невозможно удалить услугу, так как она связана с приемами.<br>
+        </p>
+        <div class="alert alert-warning">
+            <strong>Название:</strong> <span th:text="${procedure.name}"></span><br>
+            <strong>Цена, ₽:</strong> <span th:text="${procedure.price}"></span>
+        </div>
+        <a class="link-dark" th:href="@{/procedures/all}">Назад к списку</a>
+    </div>
+
+    <!-- Если нет связанных записей -->
+    <div th:if="${!hasAppointments}">
+        <p>Вы действительно хотите удалить данную услугу?</p>
+        <div class="alert alert-warning">
+            <strong>Название:</strong> <span th:text="${procedure.name}"></span><br>
+            <strong>Цена, ₽:</strong> <span th:text="${procedure.price}"></span>
+        </div>
+        <form th:action="@{/procedures/delete/{id}(id=${procedure.id})}" method="post">
+            <button type="submit" class="btn btn-outline-danger">Удалить</button>
+            <button type="button" class="btn btn-outline-secondary" onclick="window.location.href='/procedures/all'">Отмена</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Специалисты</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f1f3f6;
+            font-family: 'Segoe UI', sans-serif;
+            color: #2c2c2c;
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            padding: 0.5rem 1rem;
+        }
+
+        .navbar-brand {
+            color: #4b0082 !important;
+            font-weight: bold;
+            font-size: 1.4rem;
+            transition: color 0.3s ease;
+            margin-right: 1.2rem;
+        }
+
+        .navbar-brand:hover {
+            color: #6a0dad !important;
+            text-decoration: none;
+        }
+
+        .navbar-nav {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav-link {
+            color: #333;
+            font-weight: 500;
+            padding: 0.4rem 0;
+            transition: color 0.2s ease;
+        }
+
+        .nav-link:hover {
+            color: #6a0dad;
+            text-decoration: none;
+        }
+
+        .pets-highlight {
+            border: 2px solid #6a0dad;
+            border-radius: 8px;
+            padding: 5px 12px;
+            background-color: #f2eaff;
+            color: #6a0dad !important;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .pets-highlight:hover {
+            background-color: #e2d3ff;
+        }
+
+        .pets-highlight i {
+            color: #6a0dad;
+        }
+
+        .nav-profile i {
+            margin-right: 4px;
+            color: #555;
+        }
+
+        @media (max-width: 991.98px) {
+            .navbar-collapse {
+                text-align: left;
+            }
+
+            .navbar-nav {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 0;
+            }
+
+            .nav-link {
+                padding: 0.3rem 0;
+                color: #333 !important;
+                font-weight: 500;
+            }
+
+            .nav-link:hover {
+                color: #4b0082 !important;
+            }
+
+            .pets-highlight {
+                all: unset;
+                display: block;
+                color: #333 !important;
+                font-weight: 500;
+            }
+
+            .pets-highlight i {
+                color: #333 !important;
+            }
+
+            .nav-profile i {
+                color: #333 !important;
+            }
+        }
+
+        /* Карточка специалиста */
+        .employee-card {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .employee-card:hover {
+            transform: scale(1.02);
+        }
+
+        /* Обертка для фото — квадратная, закругленная */
+        .employee-card .photo-wrapper {
+            width: 160px;
+            height: 160px;
+            margin: 0 auto 15px;
+            overflow: hidden;
+            border-radius: 20px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        /* Само фото */
+        .employee-card .photo-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .employee-card h5 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .employee-card p {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 12px;
+        }
+
+        .employee-card a {
+            font-size: 0.9rem;
+            color: #6a0dad;
+            font-weight: 500;
+            text-decoration: none;
+        }
+
+        .employee-card a:hover {
+            text-decoration: underline;
+        }
+
+        /* Контурная кнопка "Подробнее" */
+        .btn-outline-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 16px;
+            height: 36px;        /* Фиксированная высота как у карандашика */
+            border: 2px solid #6a0dad;
+            border-radius: 13px 6px 6px 6px;  /* Верхний левый угол более закруглен */
+            background: transparent;
+            color: #6a0dad;
+            font-size: 13px;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            gap: 6px;
+            margin-right: 5px;
+        }
+
+        .btn-outline-primary:hover {
+            background: #6a0dad;
+            color: white;
+            transform: translateY(-1px);
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(106, 13, 173, 0.3);
+        }
+
+        /* Светло-фиолетовая кнопка с карандашиком */
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border: none;
+            border-radius: 6px 13px 6px 6px;  /* Верхний правый угол более закруглен */
+            background: linear-gradient(135deg, #b39ddb 0%, #9575cd 100%);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #a99bd3 0%, #8e6dc4 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(179, 157, 219, 0.4);
+        }
+
+
+    </style>
+</head>
+
+<body>
+<div th:replace="~{auth_clients/client_menu :: navigation}"></div>
+
+<div class="container py-4">
+    <h2 class="mb-4">Специалисты</h2>
+    <div class="row" >
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-4 d-flex" th:each="employee : ${employees}">
+            <div class="employee-card w-100">
+                <div class="photo-wrapper">
+                    <img th:src="'data:image/jpeg;base64,' + ${employee.imageBase64}" alt="Фото сотрудника" />
+                </div>
+                <h5 th:text="${employee.fullName}">ФИО</h5>
+                <p th:text="${employee.position}">Должность</p>
+                <div class="d-flex justify-content-center gap-2 mt-2">
+                    <a th:href="@{/vets/{id}(id=${employee.id})}" class="btn btn-outline-primary btn-sm">
+                        Подробнее</i>
+                    </a>
+                    <button th:if="${employee.availableForOnline}" class="btn btn-sm btn-secondary" disabled title="Доступна онлайн-запись">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

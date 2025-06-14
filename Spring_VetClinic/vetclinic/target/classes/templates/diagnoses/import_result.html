@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Результат импорта диагнозов</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-4">
+  <h1>Результат импорта диагнозов</h1>
+  <p>Добавлено новых диагнозов: <strong th:text="${importedCount}"></strong></p>
+  <p>Пропущено диагнозов (уже существуют): <strong th:text="${skippedCount}"></strong></p>
+
+  <div th:if="${duplicates != null and !duplicates.isEmpty()}">
+    <h4>Список пропущенных диагнозов:</h4>
+    <ul>
+      <li th:each="diag : ${duplicates}" th:text="${diag.name}"></li>
+    </ul>
+  </div>
+
+  <a href="/diagnoses/all" class="btn btn-outline-primary mt-3">Назад к списку диагнозов</a>
+</div>
+</body>
+</html>

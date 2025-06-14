@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавление породы</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1 class="my-4">Добавление породы</h1>
+    <form th:action="@{/breeds/create}" th:object="${breed}" method="post">
+        <div class="form-group">
+            <label for="name">Название породы:</label>
+            <input type="text" class="form-control" id="name" th:field="*{name}" onblur="capitalizeFirstLetter(this)" />
+            <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="animalType">Вид животного:</label>
+            <select class="form-control" id="animalType" th:field="*{animalType.id}">
+                <option th:each="type : ${animalTypes}" th:value="${type.id}" th:text="${type.name}"></option>
+            </select>
+            <div class="text-danger" th:if="${#fields.hasErrors('animalType')}" th:errors="*{animalType}"></div>
+        </div>
+
+        <button type="submit" class="btn btn-outline-success">Создать</button>
+        <a href="/breeds/all" class="btn btn-outline-secondary">Отмена</a>
+    </form>
+</div>
+</body>
+
+<script>
+    function capitalizeFirstLetter(inputElement) {
+        let inputValue = inputElement.value;
+        if(inputValue.length > 0){
+            let capitalizedValue = inputValue.charAt(0).toUpperCase() + inputValue.slice(1).toLowerCase();
+            inputElement.value = capitalizedValue;
+        }
+    }
+</script>
+
+</html>

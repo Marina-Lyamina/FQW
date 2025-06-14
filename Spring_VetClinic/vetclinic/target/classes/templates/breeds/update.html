@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Редактирование породы</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <h1 class="my-4">Редактирование породы</h1>
+    <form th:action="@{/breeds/update}" th:object="${breed}" method="post">
+        <input type="hidden" th:field="*{id}" />
+
+        <div class="form-group">
+            <label for="name">Название породы:</label>
+            <input type="text" class="form-control" id="name" th:field="*{name}" />
+            <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+        </div>
+
+        <div class="form-group">
+            <label>Вид животного:</label>
+            <input type="text" class="form-control" th:value="${breed.animalType.name}" readonly />
+        </div>
+
+        <button type="submit" class="btn btn-outline-primary">Сохранить изменения</button>
+        <a href="/breeds/all" class="btn btn-outline-secondary">Отмена</a>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,301 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="c2ff29b1-ff11-40fb-93fd-76b72072b2cf" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/vetclinic/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/apicontrollers/WebSheduleApiController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/controllers/AuthClientController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/controllers/BreedController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/controllers/DiagnosisController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/controllers/ProcedureCategoryController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/controllers/ProfileController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/controllers/PublicController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/controllers/RegisterController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/VetClinicBot.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/dtos/AnimalDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/dtos/AppointmentFilterDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/dtos/CategoryGroupedProceduresDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/dtos/CreateProcedureDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/dtos/EmployeeDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/dtos/EmployeeWithOnlineDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/dtos/UpdatePetDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/dtos/UpdateProcedureDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/dtos/VetDTO.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/entities/Breed.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/entities/Diagnosis.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/entities/ProcedureCategory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/entities/ProcedurePrice.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/repositories/BreedRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/repositories/DiagnosisRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/repositories/ProcedureCategoryRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/repositories/ProcedurePriceRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/services/BreedService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/services/DiagnosisService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/services/ProcedureCategoryService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/services/ProcedurePriceService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/services/TelegramReminderService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/utils/DiagnosisCsvParser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/utils/WebConfiguration.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/static/img/about.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/static/img/about2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/OLD/details_pet.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/OLD/update_pet.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/appointments/all.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/auth_clients/client_index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/auth_clients/client_menu.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/auth_clients/create_pet.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/auth_clients/details_app.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/auth_clients/details_pet.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/auth_clients/details_vet.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/auth_clients/pets.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/auth_clients/procedures.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/auth_clients/profile.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/auth_clients/updatePhoto.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/auth_clients/update_pet.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/auth_clients/vets.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/breeds/all.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/breeds/create.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/breeds/delete.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/breeds/details.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/breeds/update.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/diagnoses/all.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/diagnoses/create.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/diagnoses/delete.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/diagnoses/details.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/diagnoses/import_result.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/diagnoses/update.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/login.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/procedure-categories/all.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/procedure-categories/create.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/procedure-categories/delete.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/procedure-categories/details.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/procedure-categories/update.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/public/details_vet.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/public/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/public/menu.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/public/procedures.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/public/vets.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/register.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/schedules/allEmp.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/KR.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/tz.pdf" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/VetclinicApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/VetclinicApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/apicontrollers/AnimalApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/apicontrollers/AnimalApiController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/apicontrollers/ScheduleApiController.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/apicontrollers/ScheduleApiController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/controllers/AnimalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/controllers/AnimalController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/controllers/AnimalTypeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/controllers/AnimalTypeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/controllers/AppointmentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/controllers/AppointmentController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/controllers/ClientController.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/controllers/ClientController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/controllers/EmployeeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/controllers/EmployeeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/controllers/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/controllers/HomeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/controllers/PositionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/controllers/PositionController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/controllers/ProcedureController.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/controllers/ProcedureController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/controllers/ScheduleController.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/controllers/ScheduleController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/dtos/CreateAnimalDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/dtos/CreateAnimalDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/dtos/CreateAnimalScheduleDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/dtos/CreateAnimalScheduleDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/dtos/CreateAppointmentChooseEmployeesDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/dtos/CreateAppointmentChooseEmployeesDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/dtos/UpdateAnimalDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/dtos/UpdateAnimalDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/dtos/UpdateAppointmentDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/dtos/UpdateAppointmentDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/entities/Animal.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/entities/Animal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/entities/AnimalType.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/entities/AnimalType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/entities/Appointment.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/entities/Appointment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/entities/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/entities/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/entities/Employee.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/entities/Employee.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/entities/Procedure.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/entities/Procedure.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/entities/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/entities/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/enums/AnimalGender.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/models/enums/AnimalGender.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/repositories/AnimalRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/repositories/AnimalRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/repositories/AppointmentRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/repositories/AppointmentRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/repositories/ClientRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/repositories/ClientRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/repositories/PositionRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/repositories/PositionRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/repositories/ProcedureRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/repositories/ProcedureRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/repositories/ScheduleRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/repositories/ScheduleRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/services/AnimalService.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/services/AnimalService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/services/AppointmentService.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/services/AppointmentService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/services/ClientService.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/services/ClientService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/services/EmployeeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/services/EmployeeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/services/PositionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/services/PositionService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/services/ProcedureService.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/services/ProcedureService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/services/ScheduleService.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/services/ScheduleService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/services/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/services/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/utils/FileManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/utils/FileManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/utils/WebSecurityConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/java/ru/marinalyamina/vetclinic/utils/WebSecurityConfig.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/animals/create.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/animals/create.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/animals/delete.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/animals/delete.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/animals/details.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/animals/details.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/animals/update.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/animals/update.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/animals/updatePhoto.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/animals/updatePhoto.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/animaltypes/all.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/animaltypes/all.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/animaltypes/create.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/animaltypes/create.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/animaltypes/delete.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/animaltypes/delete.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/animaltypes/update.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/animaltypes/update.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/appointments/addPhoto.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/appointments/addPhoto.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/appointments/addProcedure.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/appointments/addProcedure.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/appointments/create.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/appointments/create.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/appointments/createChooseEmployees.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/appointments/createChooseEmployees.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/appointments/delete.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/appointments/delete.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/appointments/details.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/appointments/details.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/appointments/update.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/appointments/update.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/clients/all.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/clients/all.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/clients/create.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/clients/create.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/clients/delete.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/clients/delete.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/clients/details.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/clients/details.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/clients/update.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/clients/update.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/employees/all.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/employees/all.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/employees/create.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/employees/create.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/employees/delete.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/employees/delete.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/employees/details.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/employees/details.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/employees/update.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/employees/update.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/employees/updatePhoto.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/employees/updatePhoto.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/main_menu.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/main_menu.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/positions/all.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/positions/all.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/positions/create.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/positions/create.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/positions/delete.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/positions/delete.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/positions/details.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/positions/details.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/positions/update.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/positions/update.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/procedures/all.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/procedures/all.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/procedures/create.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/procedures/create.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/procedures/delete.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/procedures/delete.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/procedures/details.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/procedures/details.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/procedures/update.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/procedures/update.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/schedules/create.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/schedules/create.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/schedules/createForAnimal.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/schedules/createForAnimal.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/schedules/createForAnimalChooseEmployee.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/schedules/createForAnimalChooseEmployee.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/schedules/delete.html" beforeDir="false" afterPath="$PROJECT_DIR$/vetclinic/src/main/resources/templates/schedules/delete.html" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Enum" />
+        <option value="Interface" />
+        <option value="HTML File" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <excluded-from-favorite>
+      <branch-storage>
+        <map>
+          <entry type="LOCAL">
+            <value>
+              <list>
+                <branch-info repo="$PROJECT_DIR$" source="main" />
+              </list>
+            </value>
+          </entry>
+        </map>
+      </branch-storage>
+    </excluded-from-favorite>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2qWmc1fGrUbxBIcYJwKL4Y8LC3d" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.VetclinicApplication.executor": "Run",
+    "DefaultHtmlFileTemplate": "HTML File",
+    "Maven.vetclinic [org.apache.maven.plugins:maven-clean-plugin:3.4.0:clean].executor": "Run",
+    "Maven.vetclinic [org.apache.maven.plugins:maven-compiler-plugin:3.13.0:compile].executor": "Run",
+    "Maven.vetclinic [org.apache.maven.plugins:maven-install-plugin:3.1.3:help].executor": "Run",
+    "Maven.vetclinic [org.apache.maven.plugins:maven-install-plugin:3.1.3:install].executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/institut/FQW/Spring_VetClinic/vetclinic/src/main/resources/templates",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.0",
+    "run.code.analysis.last.selected.profile": "pProject Default",
+    "settings.editor.selected.configurable": "reference.settings.project.maven.repository.indices"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\institut\FQW\Spring_VetClinic\vetclinic\src\main\resources\templates" />
+      <recent name="C:\institut\FQW\Spring_VetClinic\vetclinic\src\main\resources\templates\procedure-categories" />
+      <recent name="C:\institut\FQW\Spring_VetClinic\vetclinic\src\main\resources\templates\auth_clients" />
+      <recent name="C:\institut\FQW\Spring_VetClinic\vetclinic\src\main\resources\templates\public" />
+      <recent name="C:\institut\FQW\Spring_VetClinic\vetclinic\src\main\resources\static\img" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\institut\FQW\Spring_VetClinic\vetclinic\src\main\resources\templates\public" />
+      <recent name="C:\institut\FQW\Spring_VetClinic\vetclinic\src\main\resources\templates\auth_clients" />
+      <recent name="C:\institut\FQW\Spring_VetClinic\vetclinic\src\main\resources\templates" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="ru.marinalyamina.vetclinic.controllers" />
+      <recent name="ru.marinalyamina.vetclinic.models.dtos" />
+      <recent name="ru.marinalyamina.vetclinic.repositories" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="VetclinicApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="ru.marinalyamina.vetclinic.VetclinicApplication" />
+      <module name="vetclinic" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="ru.marinalyamina.vetclinic.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.VetclinicApplication" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c2ff29b1-ff11-40fb-93fd-76b72072b2cf" name="Changes" comment="" />
+      <created>1734786781681</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1734786781681</updated>
+    </task>
+    <servers />
+  </component>
+</project>

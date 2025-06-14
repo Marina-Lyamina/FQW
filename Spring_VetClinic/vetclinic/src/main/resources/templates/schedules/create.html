@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Добавление</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+<div  th:replace="~{main_menu :: navigation}"></div>
+
+<div class="container">
+  <h1 class="my-4">Добавление свободной записи</h1>
+  <form th:action="@{/schedules/create}" th:object="${schedule}" method="post">
+    <input type="hidden" th:field="*{employee}"/>
+
+    <p><strong>Врач:</strong> <span th:text="${schedule.employee.user.getFIO()}"></span></p>
+
+    <div class="form-group">
+      <label for="date"><strong>Дата: </strong></label>
+      <input type="datetime-local" id="date" th:field="*{date}" class="form-control" />
+      <div class="text-danger" th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></div>
+    </div>
+
+    <button type="submit" class="btn btn-outline-success">Сохранить</button>
+    <button type="button" class="btn btn-outline-secondary" th:onclick="'window.location.href=\'/employees/details/' + ${schedule.employee.id} + '\';'">
+      Отмена
+    </button>
+
+  </form>
+</div>
+
+</body>
+</html>

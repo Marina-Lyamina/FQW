@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Удаление питомца</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+<div  th:replace="~{main_menu :: navigation}"></div>
+
+<div class="container">
+    <h1 class="my-4">Удаление питомца</h1>
+
+    <div th:if="${hasAppointmentsOrSchedules != null and hasAppointmentsOrSchedules}">
+        <p class="text-danger">
+            Невозможно удалить питомца, так как у него есть посещения и/или записи на приемы.<br>
+        </p>
+        <div class="alert alert-warning">
+            <strong>Кличка:</strong> <span th:text="${animal.name}"></span><br>
+            <strong>Вид:</strong> <span th:text="${animal.animalType.name}"></span><br>
+            <strong>Дата рождения:</strong> <span th:text="${#temporals.format(animal.birthday, 'dd.MM.yyyy')}"></span><br>
+            <strong>Пол:</strong> <span th:text="${animal.gender.getRussianString()}"></span><br>
+            <strong>Порода:</strong> <span th:text="${animal.breed}"></span><br>
+        </div>
+        <a th:href="@{/clients/details/{id}(id=${animal.client.id})}" role="button">
+            Назад к клиенту
+        </a>
+    </div>
+
+    <div th:if="${hasAppointmentsOrSchedules == null or !hasAppointmentsOrSchedules}">
+        <p>Вы действительно хотите удалить данного питомца?</p>
+
+        <div class="alert alert-warning">
+            <strong>Кличка:</strong> <span th:text="${animal.name}"></span><br>
+            <strong>Вид:</strong> <span th:text="${animal.animalType.name}"></span><br>
+            <strong>Дата рождения:</strong> <span th:text="${#temporals.format(animal.birthday, 'dd.MM.yyyy')}"></span><br>
+            <strong>Пол:</strong> <span th:text="${animal.gender.getRussianString()}"></span><br>
+            <strong>Порода:</strong> <span th:text="${animal.breed}"></span><br>
+        </div>
+        <form th:action="@{/animals/delete/{id}(id=${animal.id})}" method="post">
+            <button type="submit" class="btn btn-outline-danger">Удалить</button>
+            <button type="button" class="btn btn-outline-secondary" th:onclick="'window.location.href=\'/clients/details/' + ${animal.client.id} + '\';'">
+                Отмена
+            </button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

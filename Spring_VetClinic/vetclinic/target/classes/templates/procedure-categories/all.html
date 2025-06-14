@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Категории услуг</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div  th:replace="~{main_menu :: navigation}"></div>
+
+<div class="container">
+    <h1 class="my-4">Категории услуг</h1>
+    <a th:if = "${isAdmin == true}" href="/procedure-categories/create" class="btn btn-outline-success mb-3">Добавить</a>
+    <table class="table table-sm table-hover table-bordered align-middle">
+        <thead class="thead-light">
+        <tr>
+            <th>#</th>
+            <th style="width: 100%;">Название</th>
+            <th th:if = "${isAdmin == true}" class="text-right" style="white-space: nowrap;">Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="category, iterStat : ${categories}">
+            <td th:text="${iterStat.count}"></td>
+            <td th:text="${category.name}"></td>
+            <td th:if = "${isAdmin == true}" class="text-nowrap text-right">
+                <a class="btn btn-sm btn-outline-primary" th:href="@{/procedure-categories/update/{id}(id=${category.id})}">Редактировать</a>
+                <a class="btn btn-sm btn-outline-danger" th:href="@{/procedure-categories/delete/{id}(id=${category.id})}">Удалить</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

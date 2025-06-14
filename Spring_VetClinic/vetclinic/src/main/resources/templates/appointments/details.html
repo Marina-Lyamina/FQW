@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Подробнее</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .photo-container {
+            position: relative;
+            overflow: hidden;
+        }
+        .photo-container img {
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .photo-container:hover img {
+            transform: scale(1.05);
+        }
+        .photo-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .photo-container:hover .photo-overlay {
+            opacity: 1;
+        }
+        .photo-delete-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            z-index: 10;
+        }
+        .modal-body img {
+            width: 100%;
+            height: auto;
+        }
+    </style>
+</head>
+
+<body>
+<div th:replace="~{main_menu :: navigation}"></div>
+<div class="container mt-4">
+    <h2 class="mb-4">Информация о приеме</h2>
+
+    <div class="mt-4 d-flex justify-content-between align-items-center">
+        <div th:if="${appointment.endDate == null}">
+            <form th:action="@{/appointments/complete/{id}(id=${appointment.id})}" method="post">
+                <button type="submit" class="btn btn-outline-success btn-sm">Завершить прием</button>
+            </form>
+        </div>
+
+        <div class="d-flex gap-2">
+            <a class="btn btn-outline-danger btn-sm" th:href="@{/appointments/delete/{id}(id=${appointment.id})}">Удалить</a>
+        </div>
+    </div>
+
+    <div class="card mt-3 mb-3" style="background-color: #e6f9e6;">
+        <div class="card-header">Дата и время</div>
+        <div class="card-body">
+            <p><strong>Начало:</strong> <span th:text="${#temporals.format(appointment.date, 'dd.MM.yyyy HH:mm')}"></span></p>
+            <p><strong>Завершение:</strong>
+                <span th:if="${appointment.endDate != null}"
+                      th:text="${#temporals.format(appointment.endDate, 'dd.MM.yyyy HH:mm')}"></span>
+                <span th:unless="${appointment.endDate != null}" class="text-muted">не завершен</span>
+            </p>
+        </div>
+    </div>
+
+    <!-- Врачи -->
+    <div class="card mb-3">
+        <div class="card-header">Врачи</div>
+        <div class="card-body">
+            <ul class="mb-0">
+                <li th:each="employee : ${appointment.employees}">
+                    <span th:text="${employee.user.getFIO()}"></span>
+                    (<span th:text="${employee.position.name}"></span>)
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="card mb-3">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span>Клиент и питомец</span>
+            <a class="btn btn-sm btn-outline-secondary mt-2"
+               th:href="@{/animals/details/{id}(id=${appointment.animal.id})}">Перейти к питомцу</a>
+        </div>
+
+        <div class="card-body">
+            <p><strong>Клиент:</strong> <span th:text="${appointment.animal.client.user.getFIO()}"></span></p>
+            <p><strong>Питомец:</strong> <span th:text="${appointment.animal.name}"></span></p>
+        </div>
+    </div>
+
+    <!-- Диагноз и рекомендации -->
+    <div class="card mb-3">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span>Медицинская информация</span>
+            <a class="btn btn-sm btn-outline-secondary mt-2"
+               th:href="@{/appointments/update/{id}(id=${appointment.id})}">Редактировать</a>
+        </div>
+        <div class="card-body">
+            <p><strong>Причина:</strong> <span th:text="${appointment.reason}"></span></p>
+            <p><strong>Диагноз:</strong>
+                <span th:text="${appointment.diagnosis != null ? appointment.diagnosis.name : '—'}"></span>
+            </p>
+            <p><strong>Рекомендации:</strong> <span th:text="${appointment.medicalPrescription}"></span></p>
+        </div>
+    </div>
+
+    <!-- Услуги -->
+    <div class="card mb-3">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span>Услуги</span>
+            <a th:href="@{/appointments/addProcedure/{id}(id=${appointment.id})}" class="btn btn-sm btn-outline-success">Добавить</a>
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-sm mb-0">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Название</th>
+                    <th>Цена</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="procedure, iterStat : ${appointment.procedures}">
+                    <td th:text="${iterStat.count}"></td>
+                    <td th:text="${procedure.name}"></td>
+                    <td th:text="${procedure.price}"></td>
+                    <td class="text-right mr-5">
+                        <a class="btn btn-sm btn-outline-danger mr-3"
+                           th:href="@{/appointments/deleteProcedure(appointmentId=${appointment.id}, procedureId=${procedure.id})}">Удалить</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Фотографии -->
+    <div class="card mb-3">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <span>Фото</span>
+            <a th:href="@{/appointments/addPhoto/{id}(id=${appointment.id})}" class="btn btn-sm btn-outline-success">Добавить</a>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 mb-3" th:each="filePhoto, iterStat : ${filesPhoto}">
+                    <div class="photo-container position-relative">
+                        <!-- Кнопка удаления -->
+                        <button class="btn btn-sm btn-danger photo-delete-btn"
+                                th:onclick="'confirmDeletePhoto(' + ${iterStat.index} + ')'"
+                                title="Удалить фото">
+                            <i class="fas fa-times"></i>×
+                        </button>
+
+                        <!-- Изображение -->
+                        <img th:src="|data:image/jpeg;base64,${filePhoto}|"
+                             class="img-fluid img-thumbnail"
+                             th:onclick="'showPhotoModal(' + ${iterStat.index} + ')'"
+                             th:alt="'Фото ' + ${iterStat.count}">
+
+                        <!-- Оверлей при наведении -->
+                        <div class="photo-overlay">
+                            <div class="text-white text-center">
+                                <i class="fas fa-search-plus fa-2x mb-2"></i>
+                                <br>
+                                <small>Нажмите для увеличения</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно для просмотра фото -->
+<div class="modal fade" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="photoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="photoModalLabel">Просмотр фотографии</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <img id="modalImage" src="" alt="Увеличенное фото" class="img-fluid">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-danger" id="deletePhotoBtn">Удалить фото</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Модальное окно подтверждения удаления -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmDeleteModalLabel">Подтверждение удаления</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Вы уверены, что хотите удалить это фото?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Отмена</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Удалить</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Массив с фотографиями (заполняется из Thymeleaf)
+    let photosArray = [];
+    let currentPhotoIndex = 0;
+
+    // Инициализация массива фотографий
+    document.addEventListener('DOMContentLoaded', function() {
+        const photoElements = document.querySelectorAll('.photo-container img');
+        photoElements.forEach(img => {
+            photosArray.push(img.src);
+        });
+    });
+
+    // Функция для показа фото в модальном окне
+    function showPhotoModal(index) {
+        currentPhotoIndex = index;
+        const modalImage = document.getElementById('modalImage');
+        modalImage.src = photosArray[index];
+        $('#photoModal').modal('show');
+    }
+
+    // Функция для подтверждения удаления фото
+    function confirmDeletePhoto(index) {
+        currentPhotoIndex = index;
+        $('#confirmDeleteModal').modal('show');
+    }
+
+    // Обработчик кнопки удаления в модальном окне просмотра
+    document.getElementById('deletePhotoBtn').addEventListener('click', function() {
+        $('#photoModal').modal('hide');
+        $('#confirmDeleteModal').modal('show');
+    });
+
+    // Обработчик подтверждения удаления
+    document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+        // Здесь должен быть запрос на сервер для удаления фото
+        // Например: window.location.href = '/appointments/deletePhoto?appointmentId=' + appointmentId + '&photoIndex=' + currentPhotoIndex;
+
+        // Пока что просто удаляем элемент из DOM (для демонстрации)
+        const photoContainers = document.querySelectorAll('.photo-container');
+        if (photoContainers[currentPhotoIndex]) {
+            photoContainers[currentPhotoIndex].closest('.col-md-4').remove();
+            photosArray.splice(currentPhotoIndex, 1);
+        }
+
+        $('#confirmDeleteModal').modal('hide');
+
+        // Здесь можно добавить уведомление об успешном удалении
+        alert('Фото удалено');
+    });
+
+    // Навигация в модальном окне с помощью клавиш
+    document.addEventListener('keydown', function(e) {
+        if ($('#photoModal').hasClass('show')) {
+            if (e.key === 'ArrowLeft' && currentPhotoIndex > 0) {
+                showPhotoModal(currentPhotoIndex - 1);
+            } else if (e.key === 'ArrowRight' && currentPhotoIndex < photosArray.length - 1) {
+                showPhotoModal(currentPhotoIndex + 1);
+            }
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Прием</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+<div  th:replace="~{main_menu :: navigation}"></div>
+
+<div class="container">
+  <h1 class="my-4">Добавление записи на прием. Выбор врача</h1>
+  <form action="#" th:action="@{/schedules/createForAnimalChooseEmployee}" th:object="${chooseEmployee}" method="post">
+    <input type="hidden" th:field="*{animalId}" />
+    <table class="table table-bordered">
+      <thead class="thead-light">
+      <tr>
+        <th>#</th>
+        <th style="width: 70%;">ФИО</th>
+        <th style="width: 30%;">Должность</th>
+        <th> </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="employee, iterStat : ${employees}">
+        <td th:text="${iterStat.count}"></td>
+        <td th:text="${employee.user.getFIO()}"></td>
+        <td th:text="${employee.position.name}"></td>
+        <td class="text-nowrap text-center">
+          <label>
+            <input type="radio" th:field="*{employeeId}" th:value="${employee.id}"/>
+          </label>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="text-danger mb-4" th:if="${#fields.hasErrors('employeeId')}" th:errors="*{employeeId}"></div>
+    <button type="submit" class="btn btn-outline-success">Далее</button>
+    <button type="button" class="btn btn-outline-secondary" th:onclick="'window.location.href=\'/animals/details/' + ${chooseEmployee.animalId} + '\';'">
+      Отмена
+    </button>
+  </form>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Главная</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css">
+
+  <style>
+
+    #calendar {
+      width: 100%;
+    }
+
+    .fc-event-free {
+      background-color: #ffc107 !important; /* Желтый */
+      border-color: #ffc107 !important;
+    }
+
+    .fc-event-booked {
+      background-color: #28a745 !important; /* Зеленый */
+      border-color: #28a745 !important;
+    }
+
+    .legend {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .legend-color {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    .free-color {
+      background-color: #ffc107;
+    }
+
+    .booked-color {
+      background-color: #28a745;
+    }
+  </style>
+</head>
+
+<body>
+<div  th:replace="~{main_menu :: navigation}"></div>
+
+<div class="container">
+  <h1 class="my-4">Добро пожаловать!</h1>
+  <div>
+    <p th:if="${isAdmin}"><strong>Роль в системе:</strong> <span>Админ</span></p>
+    <p th:if="${!isAdmin}"><strong>Роль в системе:</strong> <span>Оператор</span></p>
+    <p><strong>ФИО:</strong> <span th:text="${employee.user.getFIO()}"></span></p>
+    <p><strong>Должность:</strong> <span th:text="${employee.position.name}"></span></p>
+    <p class="mt-4" th:if="${isAdmin}">
+      <a class="btn btn-outline-info" th:href="@{/employees/details/{id}(id=${employee.id})}">Перейти к подробной информации</a>
+    </p>
+  </div>
+
+
+
+  <h2 th:if="${!isAdmin}" class="my-4">Расписание</h2>
+
+  <!-- Легенда -->
+  <div th:if="${!isAdmin}" class="legend">
+    <div class="legend-item">
+      <span class="legend-color free-color"></span> Свободный слот
+    </div>
+    <div class="legend-item">
+      <span class="legend-color booked-color"></span> Запись на прием
+    </div>
+  </div>
+
+  <div th:if="${!isAdmin}" id="calendar"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/locales/ru.global.min.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const calendarEl = document.getElementById('calendar');
+
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+      locale: 'ru',
+      timeZone: 'local',
+      firstDay: 1,
+      initialView: 'timeGridDay',
+      headerToolbar: {
+        left: 'prev,next',
+        center: 'title',
+        right: 'timeGridDay,timeGridWeek,dayGridMonth'
+      },
+      buttonText: {
+        today: '',
+        day: 'День',
+        week: 'Неделя',
+        month: 'Месяц'
+      },
+      allDaySlot: false,
+      slotMinTime: "08:00:00",
+      slotMaxTime: "20:00:00",
+      nowIndicator: true,
+      editable: false,
+      eventTimeFormat: { hour: '2-digit', minute: '2-digit', hour12: false },
+
+      events: function (fetchInfo, successCallback, failureCallback) {
+        fetch('/web_schedules/vet')
+          .then(response => {
+            if (!response.ok) throw new Error("Ошибка запроса");
+            return response.json();
+          })
+          .then(data => {
+            const events = data.map(event => {
+              const isFree = !event.title || event.title.trim() === '';
+              return {
+                title: event.title, // остается пустым если свободно
+                start: event.start,
+                className: isFree ? 'fc-event-free' : 'fc-event-booked',
+                displayText: isFree ? 'Свободно' : '', // только для отображения в будущем
+              };
+            });
+            successCallback(events);
+          })
+
+          .catch(error => {
+            console.error("Ошибка загрузки событий:", error);
+            failureCallback(error);
+          });
+      },
+
+      eventDidMount: function (info) {
+        const isFree = info.event.classNames.includes('fc-event-free');
+
+        // убрать текст у зеленых (занятых) слотов
+        if (!isFree) {
+          info.el.querySelector('.fc-event-title').style.display = 'none';
+        }
+
+        //  tooltip по title
+        if (info.event.title) {
+          info.el.setAttribute('title', info.event.title);
+        }
+      }
+    });
+
+    calendar.render();
+  });
+</script>
+
+
+</body>
+</html>

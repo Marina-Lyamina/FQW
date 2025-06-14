@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Питомцы</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+             background-color: #f1f3f6;
+             font-family: 'Segoe UI', sans-serif;
+             color: #2c2c2c;
+             line-height: 1.6;
+         }
+
+         /* Меню */
+         .navbar {
+             background-color: #fff;
+             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+             padding: 0.5rem 1rem;
+         }
+
+         .navbar-brand {
+             color: #4b0082 !important;
+             font-weight: bold;
+             font-size: 1.4rem;
+             margin-right: 1.2rem;
+         }
+
+         .navbar-brand:hover {
+             color: #6a0dad !important;
+             text-decoration: none;
+         }
+
+         .navbar-nav {
+             display: flex;
+             align-items: center;
+             gap: 1rem;
+         }
+
+         .nav-link {
+             color: #333;
+             font-weight: 500;
+         }
+
+         .nav-link:hover {
+             color: #6a0dad;
+         }
+
+         .pets-highlight {
+             border: 2px solid #6a0dad;
+             border-radius: 8px;
+             padding: 5px 12px;
+             background-color: #f2eaff;
+             color: #6a0dad !important;
+             font-weight: 600;
+             display: flex;
+             align-items: center;
+             gap: 6px;
+         }
+
+         .pets-highlight:hover {
+             background-color: #e2d3ff;
+         }
+
+         .pets-highlight i {
+             color: #6a0dad;
+         }
+
+         .nav-profile i {
+             margin-right: 4px;
+             color: #555;
+         }
+
+         @media (max-width: 991.98px) {
+             .navbar-collapse {
+                 text-align: left;
+             }
+
+             .navbar-nav {
+                 flex-direction: column;
+                 align-items: flex-start !important;
+                 gap: 0;
+             }
+
+             .nav-link {
+                 color: #333 !important;
+             }
+
+             .pets-highlight,
+             .pets-highlight i,
+             .nav-profile i {
+                 color: #333 !important;
+             }
+         }
+
+         /* Карточки питомцев */
+         .pet-card {
+             background-color: #fff;
+             border-radius: 1rem;
+             padding: 1.5rem;
+             box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+             margin-bottom: 2rem;
+             display: flex;
+             align-items: flex-start;
+         }
+
+         .pet-photo {
+             width: 130px;
+             height: 130px;
+             object-fit: cover;
+             border-radius: 0.75rem;
+             margin-right: 1.5rem;
+         }
+
+         .pet-info {
+             flex-grow: 1;
+         }
+
+         .pet-name {
+             font-size: 1.3rem;
+             font-weight: 500;
+             margin-bottom: 0.5rem;
+         }
+
+         .pet-details-btn {
+             font-size: 0.9rem;
+             margin-bottom: 1rem;
+         }
+
+         .appointment-entry {
+             font-size: 0.95rem;
+             margin-bottom: 0.4rem;
+         }
+
+         .appointment-entry i {
+             color: #6f42c1;
+             margin-right: 0.4rem;
+         }
+
+         .card-divider {
+             height: 1px;
+             background-color: #e0e0e0;
+             margin: 1rem 0;
+         }
+
+         .section-title {
+             font-weight: 600;
+             margin-bottom: 1.5rem;
+         }
+
+         .no-pets-wrapper {
+             height: 60vh;
+             display: flex;
+             justify-content: center;
+             align-items: center;
+         }
+
+         .no-pets-message {
+             font-size: 1.25rem;
+             color: #666;
+         }
+
+        .btn-details {
+            border: 1px solid #6a0dad;
+            background-color: transparent;
+            color: #6a0dad;
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-weight: 500;
+            transition: 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .btn-details:hover {
+            background-color: #e9dfff;
+            color: #4b0082;
+            text-decoration: none;
+        }
+
+    </style>
+</head>
+<body>
+
+<div th:replace="~{auth_clients/client_menu :: navigation}"></div>
+
+<div class="container py-4">
+
+    <div th:if="${hasAnimals}">
+        <h2 class="section-title">Мои питомцы</h2>
+
+        <div th:each="animal : ${animals}">
+            <div class="pet-card">
+                <img class="pet-photo"
+                     th:src="|data:image/jpeg;base64,${animal.mainImageBase64}|"
+                     alt="Фото питомца">
+
+                <div class="pet-info">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="pet-name" th:text="${animal.name}">Кличка</div>
+                        <a class="btn-details mb-1" th:href="@{'/pets/' + ${animal.id}}">
+                            <i class="fas fa-info-circle"></i> Подробнее
+                        </a>
+                    </div>
+
+                    <div class="card-divider"></div>
+
+                    <div>
+                        <h6>Записи на прием:</h6>
+                        <div th:if="${animal.schedules != null and !animal.schedules.isEmpty()}">
+                            <div class="appointment-entry" th:each="schedule : ${animal.schedules}">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span th:text="${#temporals.format(schedule.date, 'dd.MM.yyyy HH:mm')}"></span>
+                                —
+                                <span th:text="${schedule.employee.user.FIOAbbreviated}">Фамилия И.О.</span>
+                            </div>
+                        </div>
+                        <div th:unless="${animal.schedules != null and !animal.schedules.isEmpty()}">
+                            <small class="text-muted">Нет предстоящих записей</small>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div th:unless="${hasAnimals}" class="no-pets-wrapper">
+        <p class="no-pets-message text-center">
+            У вас пока нет питомцев.
+            <a href="/profile" class="text-decoration-none">Добавить</a>
+        </p>
+    </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

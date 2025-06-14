@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Подробнее</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+<div  th:replace="~{main_menu :: navigation}"></div>
+
+<div class="container mt-4">
+    <h1>Подробнее об услуге</h1>
+    <div class="card">
+        <div class="card-body">
+            <p><strong>Название:</strong> <span th:text="${procedure.name}"></span></p>
+            <p><strong>Цена, ₽:</strong> <span th:text="${procedure.price}"></span></p>
+        </div>
+    </div>
+    <div class="mt-4">
+        <a class="btn btn-primary" href="/procedures/all">Назад к списку</a>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Сотрудники</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<!-- Вставка главного меню -->
+<div th:replace="~{main_menu :: navigation}"></div>
+
+<div class="container">
+  <!-- Заголовок страницы -->
+  <h1 class="my-4">Сотрудники</h1>
+
+  <!-- Форма фильтрации -->
+  <form class="form-inline mb-3">
+    <!-- Поле для поиска по ФИО -->
+    <input type="text" id="fioInput" name="fio" class="form-control mr-2" placeholder="Поиск по ФИО"
+           th:value="${fio}" />
+
+    <!-- Выбор должности -->
+    <select id="positionSelect" name="position" class="form-control mr-2">
+      <option value="">Все должности</option>
+      <option th:each="pos : ${positions}"
+              th:value="${pos.name}"
+              th:text="${pos.name}"
+              th:selected="${pos.name == position}">
+      </option>
+    </select>
+
+    <!-- Выбор статуса -->
+    <select id="statusSelect" name="status" class="form-control mr-2">
+      <option value="">Любой статус</option>
+      <option value="active" th:selected="${status == 'active'}">Работает</option>
+      <option value="inactive" th:selected="${status == 'inactive'}">Уволен</option>
+    </select>
+
+    <!-- Кнопки "Сброс" и "Добавить" -->
+    <a href="/employees/all" class="btn btn-outline-secondary">Сброс</a>
+    <a th:if="${isAdmin == true}" href="/employees/create" class="btn btn-outline-success ml-auto">Добавить</a>
+  </form>
+
+  <!-- Таблица сотрудников -->
+  <div id="employeeTable" th:fragment="tableContent">
+    <table class="table table-sm table-hover table-bordered align-middle">
+      <thead class="thead-light">
+      <tr>
+        <th>#</th>
+        <th>ФИО</th>
+        <th>Должность</th>
+        <th>Статус</th>
+        <th style="width: 10%;">Действия</th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- Цикл вывода сотрудников -->
+      <tr th:each="employee, iterStat : ${employees}">
+        <td th:text="${iterStat.count}"></td>
+        <td th:text="${employee.user.getFIO()}"></td>
+        <td th:text="${employee.position.name}"></td>
+        <td th:text="${employee.active ? 'Работает' : 'Уволен'}"></td>
+        <td class="text-nowrap text-right">
+          <a class="btn btn-outline-info btn-sm"
+             th:href="@{/employees/details/{id}(id=${employee.id})}">Подробнее</a>
+          <span class="text-muted" th:if="${!employee.active}">—</span>
+        </td>
+      </tr>
+
+      <!-- Сообщение при отсутствии данных -->
+      <tr th:if="${#lists.isEmpty(employees)}">
+        <td colspan="5" class="text-center text-muted">Нет совпадений</td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Скрипт обновления таблицы -->
+  <script>
+    const fioInput = document.getElementById("fioInput");
+    const positionSelect = document.getElementById("positionSelect");
+    const statusSelect = document.getElementById("statusSelect");
+    const tableContainer = document.getElementById("employeeTable");
+
+    function updateTable() {
+        const fio = encodeURIComponent(fioInput.value);
+        const position = encodeURIComponent(positionSelect.value);
+        const status = encodeURIComponent(statusSelect.value);
+
+        fetch(`/employees/table?fio=${fio}&position=${position}&status=${status}`)
+            .then(res => res.text())
+            .then(html => {
+                tableContainer.innerHTML = html;
+            });
+    }
+
+    [fioInput, positionSelect, statusSelect].forEach(input => {
+        input.addEventListener("input", () => {
+            clearTimeout(input._timeout);
+            input._timeout = setTimeout(updateTable, 300);
+        });
+        input.addEventListener("change", updateTable);
+    });
+  </script>
+</div>
+</body>
+</html>

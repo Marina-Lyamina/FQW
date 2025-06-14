@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Удаление</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+<div  th:replace="~{main_menu :: navigation}"></div>
+
+<div class="container">
+    <h1 class="my-4">Удаление диагноза</h1>
+
+    <div th:if="${hasAppointments}">
+        <p class="text-danger">
+            Невозможно удалить диагноз, так как он связан с приемами.<br>
+        </p>
+        <div class="alert alert-warning">
+            <strong>Название:</strong> <span th:text="${diagnosis.name}"></span>
+        </div>
+        <a class="link-dark" th:href="@{/diagnoses/all}">Назад к списку</a>
+    </div>
+
+    <div th:if="${!hasAppointments}">
+        <p>Вы действительно хотите удалить данный диагноз?</p>
+        <div class="alert alert-warning">
+            <strong>Название:</strong> <span th:text="${diagnosis.name}"></span>
+        </div>
+        <form th:action="@{/diagnoses/delete/{id}(id=${diagnosis.id})}" method="post">
+            <button type="submit" class="btn btn-outline-danger">Удалить</button>
+            <button type="button" class="btn btn-outline-secondary" onclick="window.location.href='/diagnoses/all'">Отмена</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

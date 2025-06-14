@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавление</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div  th:replace="~{main_menu :: navigation}"></div>
+
+<div class="container">
+    <h1 class="my-4">Добавление</h1>
+    <form action="/procedure-categories/create" th:object="${procedureCategory}" method="post">
+        <div class="form-group">
+            <label for="name">Название:</label>
+            <input type="text" id="name" th:field="*{name}" class="form-control" oninput="capitalizeFirstLetter(this)" />
+            <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+        </div>
+        <button type="submit" class="btn btn-outline-success">Сохранить</button>
+        <button type="button" class="btn btn-outline-secondary" onclick="window.location.href='/procedure-categories/all'">Отмена</button>
+    </form>
+</div>
+
+<script>
+    function capitalizeFirstLetter(inputElement) {
+        let inputValue = inputElement.value;
+        if (inputValue.length > 0) {
+            inputElement.value = inputValue.charAt(0).toUpperCase() + inputValue.slice(1).toLowerCase();
+        }
+    }
+</script>
+</body>
+</html>

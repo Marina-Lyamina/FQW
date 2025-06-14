@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Добавление приема — Выбор врачей</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div th:replace="~{main_menu :: navigation}"></div>
+<div class="container mt-4">
+
+  <h2>Добавление приема</h2>
+
+  <!-- Текущий врач -->
+  <div class="card mt-3 border-success">
+    <div class="card-header bg-light">
+      <div class="d-flex align-items-center">
+        <div class="flex-grow-1">
+          <i class="fas fa-user-md"></i> <strong th:text="${currentEmp.user.getFIO()}"></strong>
+          <span class="text-muted ml-1" th:text="'(' + ${currentEmp.position.name} + ')'"></span>
+        </div>
+        <span class="badge badge-success">Выбран</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Блок выбранных сотрудников -->
+  <div id="selectedEmployeesBlock" class="card mt-3 border-primary">
+    <div class="card-header bg-light">
+      <strong>Выбранные сотрудники:</strong>
+    </div>
+    <ul id="selectedEmployeesList" class="list-group list-group-flush">
+      <!-- Заполняется скриптом -->
+    </ul>
+  </div>
+
+  <div class="mt-3 mb-4">
+    <a th:href="@{/animals/details/{id}(id=${chooseEmployees.animalId})}" class="btn btn-outline-secondary">Отмена</a>
+    <button type="submit" class="btn btn-outline-success" form="chooseEmployeesForm">Продолжить > </button>
+  </div>
+
+  <h5>Добавить сотрудника(-ов) <small class="text-muted">(необязательно)</small></h5>
+
+  <!-- Фильтры -->
+  <div class="form-inline mb-3">
+    <input type="text" id="searchFio" placeholder="Поиск по ФИО" class="form-control mr-2">
+    <select id="searchPosition" class="form-control mr-2">
+      <option value="">Все должности</option>
+      <option th:each="pos : ${availablePositions}" th:value="${pos}" th:text="${pos}"></option>
+    </select>
+    <button id="resetFilters" class="btn btn-sm btn-outline-secondary mr-2">Сброс фильтров</button>
+    <button id="resetSelection" class="btn btn-sm btn-outline-secondary">Сброс выбора</button>
+  </div>
+
+  <form id="chooseEmployeesForm" th:action="@{/appointments/createChooseEmployees}" th:object="${chooseEmployees}" method="post">
+    <input type="hidden" th:field="*{animalId}" />
+    <!-- текущий врач по умолчанию -->
+    <input type="hidden" th:field="*{employeeIds}" th:value="${currentEmp.id}" />
+
+    <!-- Таблица сотрудников -->
+    <div id="employeeTable" th:fragment="employeeTable">
+      <table class="table table-sm table-hover">
+        <thead>
+        <tr>
+          <th>#</th><th>ФИО</th><th>Должность</th><th>Выбрать</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="emp, st : ${employees}">
+          <td th:text="${st.count}"></td>
+          <td th:text="${emp.user.getFIO()}"></td>
+          <td th:text="${emp.position.name}"></td>
+          <td class="text-center">
+            <input type="checkbox" th:field="*{employeeIds}" th:value="${emp.id}" />
+          </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(employees)}">
+          <td colspan="4" class="text-center text-muted">Нет подходящих врачей</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="alert alert-danger mt-3" th:if="${#fields.hasErrors('employeeIds')}" th:errors="*{employeeIds}"></div>
+  </form>
+</div>
+
+<!-- Скрипты -->
+<script>
+  const fio = document.getElementById("searchFio");
+  const pos = document.getElementById("searchPosition");
+  const tableDiv = document.getElementById("employeeTable");
+  const aId = /*[[${chooseEmployees.animalId}]]*/0;
+
+  const selectedEmployees = new Set();
+
+  function updateTable() {
+    const params = new URLSearchParams({animalId: aId});
+    if (fio.value.trim()) params.set("fio", fio.value.trim());
+    if (pos.value) params.set("position", pos.value);
+
+    fetch("/appointments/create/employeesTable?" + params)
+      .then(r => r.text())
+      .then(html => {
+        tableDiv.innerHTML = html;
+        restoreSelections();
+      })
+      .catch(err => console.error('Ошибка загрузки:', err));
+  }
+
+  const debounce = (fn, ms = 300) => {
+    let timeout;
+    return (...args) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => fn.apply(this, args), ms);
+    };
+  };
+
+  function saveSelections() {
+    selectedEmployees.clear();
+    document.querySelectorAll('input[type=checkbox][name="employeeIds"]:checked').forEach(cb => {
+      selectedEmployees.add(cb.value);
+    });
+  }
+
+  function restoreSelections() {
+    document.querySelectorAll('input[type=checkbox][name="employeeIds"]').forEach(cb => {
+      if (selectedEmployees.has(cb.value)) {
+        cb.checked = true;
+      }
+    });
+    updateSelectedEmployeesList();
+  }
+
+  function updateSelectedEmployeesList() {
+    const list = document.getElementById('selectedEmployeesList');
+    list.innerHTML = '';
+
+    document.querySelectorAll('input[type=checkbox][name="employeeIds"]:checked').forEach(cb => {
+      const row = cb.closest('tr');
+      if (row) {
+        const fio = row.children[1]?.textContent || '';
+        const position = row.children[2]?.textContent || '';
+        const li = document.createElement('li');
+        li.className = 'list-group-item d-flex justify-content-between align-items-center';
+        li.innerHTML = `<span>${fio} <small class="text-muted">(${position})</small></span>`;
+        list.appendChild(li);
+      }
+    });
+  }
+
+  fio.addEventListener("input", debounce(() => {
+    saveSelections();
+    updateTable();
+  }));
+
+  pos.addEventListener("change", () => {
+    saveSelections();
+    updateTable();
+  });
+
+  document.addEventListener('change', (e) => {
+    if (e.target.matches('input[type=checkbox][name="employeeIds"]')) {
+      saveSelections();
+      updateSelectedEmployeesList();
+    }
+  });
+
+  document.getElementById("resetFilters").onclick = () => {
+    fio.value = "";
+    pos.value = "";
+    selectedEmployees.clear();
+    updateTable();
+  };
+
+  document.getElementById("resetSelection").onclick = () => {
+    document.querySelectorAll('input[type=checkbox][name="employeeIds"]').forEach(cb => {
+      cb.checked = false;
+    });
+    selectedEmployees.clear();
+    updateSelectedEmployeesList();
+  };
+
+  document.addEventListener('DOMContentLoaded', () => {
+    saveSelections();
+    updateSelectedEmployeesList();
+  });
+</script>
+
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</body>
+</html>

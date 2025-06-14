@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Удаление</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div  th:replace="~{main_menu :: navigation}"></div>
+
+<div class="container">
+    <h1 class="my-4">Удаление категории процедур</h1>
+
+    <div th:if="${hasProcedures}">
+        <p class="text-danger">Невозможно удалить категорию, так как она содержит процедуры.</p>
+        <div class="alert alert-warning">
+            <strong>Название:</strong> <span th:text="${procedureCategory.name}"></span>
+        </div>
+        <a class="link-dark" th:href="@{/procedure-categories/all}">Назад к списку</a>
+    </div>
+
+    <div th:if="${!hasProcedures}">
+        <p>Вы действительно хотите удалить данную категорию?</p>
+        <div class="alert alert-warning">
+            <strong>Название:</strong> <span th:text="${procedureCategory.name}"></span>
+        </div>
+        <form th:action="@{/procedure-categories/delete/{id}(id=${procedureCategory.id})}" method="post">
+            <button type="submit" class="btn btn-outline-danger">Удалить</button>
+            <button type="button" class="btn btn-outline-secondary" onclick="window.location.href='/procedure-categories/all'">Отмена</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

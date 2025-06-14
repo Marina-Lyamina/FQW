@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Главная</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f1f3f6;
+            font-family: 'Segoe UI', sans-serif;
+            color: #2c2c2c;
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            padding: 0.5rem 1rem;
+        }
+
+        .navbar-brand {
+            color: #4b0082 !important;
+            font-weight: bold;
+            font-size: 1.4rem;
+            transition: color 0.3s ease;
+            margin-right: 1.2rem;
+        }
+
+        .navbar-brand:hover {
+            color: #6a0dad !important;
+            text-decoration: none;
+        }
+
+        .navbar-nav {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav-link {
+            color: #333;
+            font-weight: 500;
+            padding: 0.4rem 0;
+            transition: color 0.2s ease;
+        }
+
+        .nav-link:hover {
+            color: #6a0dad;
+            text-decoration: none;
+        }
+
+        .pets-highlight {
+            border: 2px solid #6a0dad;
+            border-radius: 8px;
+            padding: 5px 12px;
+            background-color: #f2eaff;
+            color: #6a0dad !important;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .pets-highlight:hover {
+            background-color: #e2d3ff;
+        }
+
+        .pets-highlight i {
+            color: #6a0dad;
+        }
+
+        .nav-profile i {
+            margin-right: 4px;
+            color: #555;
+        }
+
+        /* Основные стили страницы */
+        .hero-section {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 12px;
+            padding: 2rem 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+            border: 1px solid #e9ecef;
+        }
+
+        .hero-title {
+            color: #2c2c2c;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-size: 2.2rem;
+        }
+
+        .hero-subtitle {
+            color: #6c757d;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-custom-primary {
+            border: 2px solid #dee2e6;
+            color: #495057;
+            background-color: white;
+            padding: 10px 25px;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-custom-primary:hover {
+            border-color: #4b0082;
+            color: #4b0082;
+            background-color: #f8f9fa;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(75, 0, 130, 0.1);
+        }
+
+        .btn-custom-outline {
+            background-color: #4b0082;
+            border-color: #4b0082;
+            color: white;
+            padding: 10px 25px;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-custom-outline:hover {
+            background-color: #6a0dad;
+            border-color: #6a0dad;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(75, 0, 130, 0.25);
+        }
+
+        .advantage-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            height: 100%;
+            border: 1px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+        .advantage-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border-color: #dee2e6;
+        }
+
+        .advantage-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            color: #4b0082;
+            font-size: 1.5rem;
+        }
+
+        .advantage-title {
+            color: #2c2c2c;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+        }
+
+        .advantage-text {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .about-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid #e9ecef;
+        }
+
+        .about-title {
+            color: #2c2c2c;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .about-text {
+            color: #495057;
+            margin-bottom: 1rem;
+        }
+
+        .about-list {
+            color: #495057;
+        }
+
+        .about-list li {
+            margin-bottom: 0.5rem;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .about-list li:before {
+            position: absolute;
+            left: 0;
+            color: #4b0082;
+            font-weight: bold;
+        }
+
+        .about-image {
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #e9ecef, transparent);
+            margin: 1rem 0;
+        }
+
+        @media (max-width: 991.98px) {
+            .navbar-collapse {
+                text-align: left;
+            }
+
+            .navbar-nav {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 0;
+            }
+
+            .nav-link {
+                padding: 0.3rem 0;
+                color: #333 !important;
+                font-weight: 500;
+            }
+
+            .nav-link:hover {
+                color: #4b0082 !important;
+            }
+
+            .pets-highlight {
+                all: unset;
+                display: block;
+                color: #333 !important;
+                font-weight: 500;
+            }
+
+            .pets-highlight i {
+                color: #333 !important;
+            }
+
+            .nav-profile i {
+                color: #333 !important;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-section {
+                padding: 2rem 1.5rem;
+            }
+
+            .about-section {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+    </style>
+</head>
+
+<body>
+<div th:replace="~{/public/menu :: navigation}"></div>
+
+<div class="container my-4">
+    <!-- Главный блок -->
+    <div class="hero-section text-center">
+        <h1 class="hero-title">Ветеринарная клиника VetClinic</h1>
+        <p class="hero-subtitle">Забота, профессионализм и любовь к каждому питомцу</p>
+        <div class="mt-4">
+            <a class="btn btn-custom-primary btn-lg mb-2" href="/login" role="button">Записаться на прием</a>
+            <a class="btn btn-custom-outline btn-lg mr-3 mb-2" href="/procedures_prices" role="button">Услуги и цены</a>
+        </div>
+    </div>
+
+    <!-- Преимущества -->
+    <div class="row mb-2">
+        <div class="col-md-4 mb-4">
+            <div class="advantage-card text-center">
+                <div class="advantage-icon">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <h5 class="advantage-title">Опытные врачи</h5>
+                <p class="advantage-text">Команда профессионалов с большим опытом и любовью к животным</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="advantage-card text-center">
+                <div class="advantage-icon">
+                    <i class="fas fa-stethoscope"></i>
+                </div>
+                <h5 class="advantage-title">Современное оборудование</h5>
+                <p class="advantage-text">Передовые технологии для точной диагностики и лечения</p>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="advantage-card text-center">
+                <div class="advantage-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <h5 class="advantage-title">Дружелюбная атмосфера</h5>
+                <p class="advantage-text">Мы заботимся о том, чтобы ваш питомец чувствовал себя спокойно и комфортно</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- О клинике -->
+    <div class="row align-items-center">
+        <div class="col-md-6 mb-4">
+            <img src="/img/about.jpg" class="img-fluid about-image" alt="О клинике">
+        </div>
+        <div class="col-md-6">
+            <div class="about-section">
+                <h3 class="about-title">О нашей клинике</h3>
+                <p class="about-text">Добро пожаловать в <strong>VetClinic</strong> — место, где забота о вашем питомце стоит на первом месте.</p>
+                <p class="about-text">Мы предлагаем качественную ветеринарную помощь, используя современное оборудование и индивидуальный подход. В нашей команде работают врачи с опытом и любовью к животным.</p>
+                <p class="about-text">У нас вы можете получить:</p>
+                <ul class="about-list">
+                    <li>Консультацию от опытного специалиста</li>
+                    <li>Профессиональную диагностику и лечение</li>
+                    <li>Рекомендации по питанию и уходу</li>
+                </ul>
+                <p class="about-text">Мы понимаем, как важны для вас ваши питомцы — и делаем все, чтобы они чувствовали себя лучше как можно скорее.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

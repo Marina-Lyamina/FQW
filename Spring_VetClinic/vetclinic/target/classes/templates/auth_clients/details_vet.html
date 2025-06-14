@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Подробнее о специалисте</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css">
+  <style>
+    body {
+            background-color: #f1f3f6;
+            font-family: 'Segoe UI', sans-serif;
+            color: #2c2c2c;
+            line-height: 1.6;
+        }
+
+    .navbar {
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      padding: 0.5rem 1rem;
+    }
+
+    .navbar-brand {
+      color: #4b0082 !important;
+      font-weight: bold;
+      font-size: 1.4rem;
+      transition: color 0.3s ease;
+      margin-right: 1.2rem;
+    }
+
+    .navbar-brand:hover {
+      color: #6a0dad !important;
+      text-decoration: none;
+    }
+
+    .navbar-nav {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .nav-link {
+      color: #333;
+      font-weight: 500;
+      padding: 0.4rem 0;
+      transition: color 0.2s ease;
+    }
+
+    .nav-link:hover {
+      color: #6a0dad;
+      text-decoration: none;
+    }
+
+    .pets-highlight {
+      border: 2px solid #6a0dad;
+      border-radius: 8px;
+      padding: 5px 12px;
+      background-color: #f2eaff;
+      color: #6a0dad !important;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pets-highlight:hover {
+      background-color: #e2d3ff;
+    }
+
+    .pets-highlight i {
+      color: #6a0dad;
+    }
+
+    .nav-profile i {
+      margin-right: 4px;
+      color: #555;
+    }
+
+    @media (max-width: 991.98px) {
+      .navbar-collapse {
+        text-align: left;
+      }
+
+      .navbar-nav {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 0;
+      }
+
+      .nav-link {
+        padding: 0.3rem 0;
+        color: #333 !important;
+        font-weight: 500;
+      }
+
+      .nav-link:hover {
+        color: #4b0082 !important;
+      }
+
+      .pets-highlight {
+        all: unset;
+        display: block;
+        color: #333 !important;
+        font-weight: 500;
+      }
+
+      .pets-highlight i {
+        color: #333 !important;
+      }
+
+      .nav-profile i {
+        color: #333 !important;
+      }
+    }
+
+    .content-wrapper {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .photo-wrapper img {
+      max-width: 100%;
+      height: auto;
+      max-height: 300px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .calendar-section {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+
+    #calendar {
+      width: 400px;
+      height: 400px;
+    }
+
+    #time-slots {
+      flex: 1;
+    }
+
+    /* кнопки времени */
+    .slot-button {
+      margin: 0.4rem;
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      background-color: #f1fdf3;
+      border: 2px solid #28a745;
+      color: #222;
+      font-weight: 500;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .slot-button:hover {
+      background-color: #d0f5d8;
+      color: #000;
+      border-color: #218838;
+    }
+
+    /* кнопка "Записаться" */
+    #book-btn {
+      padding: 0.7rem 2.5rem;
+      font-size: 1rem;
+      border: 2px solid #6a0dad;
+      background-color: transparent;
+      color: #6a0dad;
+      border-radius: 10px;
+      transition: all 0.25s ease;
+      font-weight: 600;
+    }
+
+    #book-btn:hover {
+      background-color: #f1e7ff;
+      color: #4b0082;
+      border-color: #4b0082;
+    }
+
+    /* ВЫБРАННАЯ ДАТА  */
+    .fc-daygrid-day.selected-date {
+      outline: 3px solid black;
+      outline-offset: -2px;
+      border-radius: 4px;
+    }
+
+    /* Сообщение при загрузке */
+    #slots-container.empty {
+      text-align: center;
+      font-size: 1.2rem;
+      color: #6c757d;
+    }
+
+    /* Сообщение при отсутствии слотов */
+    #slots-container.no-slots {
+      text-align: center;
+      font-size: 1.2rem;
+      color: #6c757d;
+    }
+
+    .section-title {
+            color: #4b0082;
+            margin-bottom: 2rem;
+    }
+
+    .back-link {
+      color: #6a0dad;
+    }
+
+    .back-link:hover {
+      color: #4b0082;
+      text-decoration: none;
+    }
+
+    .modal-content {
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .custom-control-input:checked ~ .custom-control-label::before {
+      border-color: #6a0dad;
+      background-color: #6a0dad;
+    }
+
+    .custom-control-label::before {
+      border-radius: 50%;
+      border: 2px solid #6a0dad;
+      background-color: #fff;
+      top: 0.2rem;
+      left: -1.5rem;
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+
+    .custom-control-label {
+      padding-left: 1.5rem;
+      font-weight: 500;
+      color: #333;
+    }
+
+
+
+
+  </style>
+</head>
+<body>
+<div th:replace="~{auth_clients/client_menu :: navigation}"></div>
+
+<div class="container my-4">
+  <div class="d-flex align-items-center mb-4">
+    <a th:href="@{/vets}" class="back-link"><i class="fas fa-arrow-left"></i></a>
+    <h2 class="mb-0 ml-2" th:text="${FIO}">ФИО врача</h2>
+  </div>
+
+  <div class="content-wrapper mb-4">
+    <div class="row align-items-center">
+      <div class="col-md-5 photo-wrapper">
+        <img th:src="'data:image/jpeg;base64,' + ${filePhoto}" alt="Фото врача">
+      </div>
+      <div class="col-md-7">
+        <h5 class="position-title mb-3" th:text="${employee.position.name}">Должность</h5>
+        <p class="description-text" th:text="${employee.description}">Описание специалиста</p>
+      </div>
+    </div>
+  </div>
+
+  <div th:if="${employee.availableForOnline}" class="content-wrapper">
+    <h3 class="section-title">Записаться на прием</h3>
+    <div class="calendar-section">
+      <div id="calendar"></div>
+      <div id="time-slots">
+        <h5>Выберите время приема</h5>
+        <div id="slots-container" class="mb-3 empty">Выберите дату для просмотра свободных временных слотов</div>
+        <button id="book-btn" class="btn btn-primary d-none" data-toggle="modal" data-target="#confirmModal">Записаться</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Модалка записи -->
+<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="confirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content border-0 rounded-3">
+      <div class="modal-header bg-light border-bottom-0">
+        <h5 class="modal-title" id="confirmModalLabel">Подтверждение записи</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Закрыть">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <form id="bookingForm" method="post" action="/pets/schedule">
+        <div class="modal-body" style="font-size: 1.05rem;">
+
+          <input type="hidden" name="animalId" id="animalIdInput">
+          <input type="hidden" name="scheduleId" id="scheduleIdInput">
+
+          <div class="alert alert-success mb-3">
+            <strong>Вы собираетесь записаться на:</strong><br>
+            <span id="selected-date-text">дата</span> в <span id="selected-time-text">время</span>
+          </div>
+
+          <div class="p-3 mb-4" style="background-color: #fff3cd; border-radius: 8px;">
+            <strong>Врач:</strong> <span id="selected-doctor-text">ФИО врача</span>
+          </div>
+
+          <div class="form-group ml-3">
+            <label class="mb-2"><strong>Выберите питомца:</strong></label>
+            <div id="pet-error" class="text-danger mb-2 d-none">Пожалуйста, выберите питомца</div>
+            <div class="row">
+              <div class="col-md-6 mb-2" th:each="pet : ${pets}">
+                <div class="form-check">
+                  <input class="form-check-input pet-radio" type="radio"
+                         th:id="'pet-' + ${pet.id}"
+                         th:value="${pet.id}"
+                         name="selectedPet">
+                  <label class="form-check-label"
+                         th:for="'pet-' + ${pet.id}"
+                         th:text="${pet.name}"></label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="modal-footer border-top-0">
+          <button type="submit" class="btn btn-outline-success">Записаться</button>
+          <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Отмена</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+<script th:inline="javascript">
+  let availableSlots = /*[[${schedulesJson}]]*/ '[]';
+  let parsedSlots = JSON.parse(availableSlots);
+
+  let selectedDate = null;
+  let selectedTime = null;
+  let selectedSlotId = null;
+
+  let availableDates = [...new Set(parsedSlots.map(s => s.date.substring(0, 10)))];
+
+  document.addEventListener('DOMContentLoaded', function () {
+    const calendarEl = document.getElementById('calendar');
+
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      locale: 'ru',
+      firstDay: 1,
+      contentHeight: 400,
+      dayMaxEventRows: true,
+      headerToolbar: {
+        left: 'prev,next',
+        center: 'title',
+        right: ''
+      },
+      dayCellDidMount: function (info) {
+        const year = info.date.getFullYear();
+        const month = String(info.date.getMonth() + 1).padStart(2, '0');
+        const day = String(info.date.getDate()).padStart(2, '0');
+        const dateStr = `${year}-${month}-${day}`;
+
+        if (availableDates.includes(dateStr)) {
+          info.el.style.backgroundColor = '#d4edda';
+          info.el.style.cursor = 'pointer';
+        }
+      },
+      dateClick: function (info) {
+        document.querySelectorAll('.fc-daygrid-day').forEach(el => {
+          el.classList.remove('selected-date');
+        });
+        info.dayEl.classList.add('selected-date');
+
+        selectedDate = info.dateStr;
+
+        const dateObj = new Date(info.dateStr);
+        formattedDate = dateObj.toLocaleDateString('ru-RU', {
+          day: '2-digit',
+          month: 'long',
+          year: 'numeric'
+        });
+
+        selectedTime = null;
+        selectedSlotId = null;
+
+        const slotsContainer = document.getElementById('slots-container');
+        const bookBtn = document.getElementById('book-btn');
+        slotsContainer.innerHTML = '';
+        bookBtn.classList.add('d-none');
+
+        const timeSlots = parsedSlots.filter(s => s.date.startsWith(selectedDate));
+        if (timeSlots.length === 0) {
+          slotsContainer.innerText = 'Нет свободных временных слотов';
+          slotsContainer.classList.remove('empty');
+          slotsContainer.classList.add('no-slots');
+          return;
+        }
+        slotsContainer.classList.remove('empty', 'no-slots');
+
+        timeSlots.forEach(slot => {
+          const time = new Date(slot.date).toLocaleTimeString('ru-RU', {
+            hour: '2-digit',
+            minute: '2-digit'
+          });
+          const btn = document.createElement('button');
+          btn.className = 'btn slot-button';
+          btn.innerText = time;
+          btn.onclick = () => {
+            selectedSlotId = slot.id;
+            selectedTime = time;
+            bookBtn.classList.remove('d-none');
+          };
+          slotsContainer.appendChild(btn);
+        });
+      }
+
+    });
+
+    calendar.render();
+  });
+
+
+  $('#confirmModal').on('show.bs.modal', function () {
+    const fio = document.querySelector('h2').textContent;
+    document.getElementById('selected-doctor-text').innerText = fio;
+    document.getElementById('selected-date-text').innerText = formattedDate;
+    document.getElementById('selected-time-text').innerText = selectedTime;
+
+    document.getElementById('scheduleIdInput').value = selectedSlotId;
+
+    const radios = document.querySelectorAll('input[name="selectedPet"]');
+    radios.forEach(radio => {
+        radio.addEventListener('change', function () {
+            if (this.checked) {
+                document.getElementById('animalIdInput').value = this.value;
+            }
+        });
+    });
+
+    const selected = document.querySelector('input[name="selectedPet"]:checked');
+    if (selected) {
+        document.getElementById('animalIdInput').value = selected.value;
+    }
+
+    document.getElementById('bookingForm').addEventListener('submit', function (e) {
+      const selectedPet = document.querySelector('input[name="selectedPet"]:checked');
+      const errorDiv = document.getElementById('pet-error');
+
+      if (!selectedPet) {
+        e.preventDefault();
+        errorDiv.classList.remove('d-none');
+        return false;
+      } else {
+        errorDiv.classList.add('d-none');
+      }
+    });
+
+    document.querySelectorAll('input[name="selectedPet"]').forEach(radio => {
+      radio.addEventListener('change', function () {
+        const errorDiv = document.getElementById('pet-error');
+        if (this.checked) {
+          document.getElementById('animalIdInput').value = this.value;
+          errorDiv.classList.add('d-none');
+        }
+      });
+
+    });
+});
+
+
+</script>
+
+</body>
+</html>

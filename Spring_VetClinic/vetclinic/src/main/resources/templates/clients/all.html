@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="UTF-8">
+  <title>Клиенты</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+<div  th:replace="~{main_menu :: navigation}"></div>
+
+<div class="container">
+  <h1 class="my-4">Клиенты</h1>
+
+  <form class="form-inline mb-3">
+    <input type="text" id="fioInput" name="fio" class="form-control mr-2" placeholder="Поиск по ФИО"
+           th:value="${fio}" />
+
+    <input type="text" id="phoneInput" name="phone" class="form-control mr-2" placeholder="Поиск по телефону"
+           th:value="${phone}" />
+
+    <a href="/clients/all" class="btn btn-outline-secondary">Сброс</a>
+    <a href="/clients/create" class="btn btn-outline-success ml-auto">Добавить</a>
+    <!--    <a href="/clients/report" class="btn btn-outline-primary mb-3">Скачать отчет по всем клиентам</a>-->
+  </form>
+
+  <div id="clientTable" th:fragment="tableContent">
+    <table class="table table-sm table-hover table-bordered align-middle">
+      <thead class="thead-light">
+      <tr>
+        <th style="width: 5%;">#</th>
+        <th style="width: 30%;">ФИО</th>
+        <th style="width: 20%;">Телефон</th>
+        <th style="width: 25%;">Email</th>
+        <th style="width: 20%;" class="text-center">Действия</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="client, iterStat : ${clients}">
+        <td th:text="${iterStat.count}"></td>
+        <td th:text="${client.user.getFIO()}"></td>
+        <td th:text="${client.user.phone}"></td>
+        <td th:text="${client.user.email}"></td>
+        <td class="text-right">
+          <a class="btn btn-outline-info" th:href="@{/clients/details/{id}(id=${client.id})}">Подробнее</a>
+          <a class="btn btn-outline-danger" th:href="@{/clients/delete/{id}(id=${client.id})}">Удалить</a>
+        </td>
+      </tr>
+      <tr th:if="${#lists.isEmpty(clients)}">
+        <td colspan="5" class="text-center text-muted">Нет совпадений</td>
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+
+  <script>
+    const fioInput = document.getElementById("fioInput");
+    const phoneInput = document.getElementById("phoneInput");
+    const tableContainer = document.getElementById("clientTable");
+
+    function updateTable() {
+      const fio = encodeURIComponent(fioInput.value);
+      const phone = encodeURIComponent(phoneInput.value);
+
+      fetch(`/clients/table?fio=${fio}&phone=${phone}`)
+        .then(res => res.text())
+        .then(html => {
+          tableContainer.innerHTML = html;
+        });
+    }
+
+    [fioInput, phoneInput].forEach(input => {
+      input.addEventListener("input", () => {
+        clearTimeout(input._timeout);
+        input._timeout = setTimeout(updateTable, 300);
+      });
+    });
+  </script>
+
+
+</div>
+</body>
+</html>

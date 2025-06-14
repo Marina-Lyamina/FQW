@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Удаление сотрудника</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+<div  th:replace="~{main_menu :: navigation}"></div>
+
+<div class="container">
+    <h1 class="my-4">Удаление сотрудника</h1>
+
+    <!-- Если у сотрудника есть приемы или расписание, выводим сообщение и не даем удалить -->
+    <div th:if="${hasAppointments or hasSchedules}">
+        <p class="text-danger">
+            Невозможно удалить сотрудника, так как у него есть связанные приемы или активное расписание.<br>
+        </p>
+        <div class="alert alert-warning">
+            <strong>ФИО:</strong> <span th:text="${employee.user.getFIO()}"></span><br>
+            <strong>Должность:</strong> <span th:text="${employee.position.name}"></span><br>
+            <strong>Дата рождения:</strong> <span th:text="${#temporals.format(employee.user.birthday, 'dd.MM.yyyy')}"></span><br>
+            <strong>Номер телефона:</strong> <span th:text="${employee.user.phone}"></span><br>
+            <strong>Email:</strong> <span th:text="${employee.user.email}"></span>
+        </div>
+        <a class="link-dark" th:href="@{/employees/all}">Назад к списку</a>
+    </div>
+
+    <!-- Если у сотрудника нет приемов и расписания, показываем кнопку удаления -->
+    <div th:if="${!hasAppointments and !hasSchedules}">
+        <p>Вы действительно хотите удалить данного сотрудника?</p>
+
+        <div class="alert alert-warning">
+            <strong>ФИО:</strong> <span th:text="${employee.user.getFIO()}"></span><br>
+            <strong>Должность:</strong> <span th:text="${employee.position.name}"></span><br>
+            <strong>Дата рождения:</strong> <span th:text="${#temporals.format(employee.user.birthday, 'dd.MM.yyyy')}"></span><br>
+            <strong>Номер телефона:</strong> <span th:text="${employee.user.phone}"></span><br>
+            <strong>Email:</strong> <span th:text="${employee.user.email}"></span>
+        </div>
+        <form th:action="@{/employees/delete/{id}(id=${employee.id})}" method="post">
+            <button type="submit" class="btn btn-outline-danger">Удалить</button>
+            <button type="button" class="btn btn-outline-secondary" onclick="window.location.href='/employees/all'">Отмена</button>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>

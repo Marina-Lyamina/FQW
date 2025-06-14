@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Удаление</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+<div  th:replace="~{main_menu :: navigation}"></div>
+
+<div class="container">
+  <h1 class="my-4">Удаление записи</h1>
+
+  <div th:if="${hasAnimal}">
+    <p class="text-danger">
+      Невозможно удалить запись. Клиент уже записан.<br>
+    </p>
+    <div class="alert alert-warning">
+      <p><strong>Дата:</strong> <span th:text="${#temporals.format(schedule.date, 'dd.MM.yyyy HH:mm')}"></span></p>
+      <p><strong>Врач:</strong> <span th:text="${schedule.employee.user.getFIO()}"></span></p>
+      <p><strong>Клиент:</strong> <span th:text="${schedule.animal.client.user.getFIO()}"></span></p>
+      <p><strong>Питомец:</strong> <span th:text="${schedule.animal.name}"></span></p>
+    </div>
+    <a class="link-dark" th:href="@{/employees/details/{id}(id=${schedule.employee.id})}">Назад к сотруднику</a>
+  </div>
+
+  <div th:if="${!hasAnimal}">
+    <p>Вы действительно хотите удалить данную запись?</p>
+    <div class="alert alert-warning">
+      <p><strong>Дата:</strong> <span th:text="${#temporals.format(schedule.date, 'dd.MM.yyyy HH:mm')}"></span></p>
+      <p><strong>Врач:</strong> <span th:text="${schedule.employee.user.getFIO()}"></span></p>
+    </div>
+    <form th:action="@{/schedules/delete/{id}(id=${schedule.id})}" method="post">
+      <button type="submit" class="btn btn-outline-danger">Удалить</button>
+      <button type="button" class="btn btn-outline-secondary" th:onclick="'window.location.href=\'/employees/details/' + ${schedule.employee.id} + '\';'">Отмена</button>
+    </form>
+  </div>
+</div>
+</body>
+</html>

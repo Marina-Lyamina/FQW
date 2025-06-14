@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Изменение услуги</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+<div  th:replace="~{main_menu :: navigation}"></div>
+
+<div class="container">
+    <h1 class="my-4">Изменение услуги</h1>
+
+    <!-- Показываем информацию о категории и типе животного (только для просмотра) -->
+    <div class="alert alert-info">
+        <strong>Категория:</strong> <span th:text="${procedure.category.name}"></span><br>
+        <strong>Вид животного:</strong> <span th:text="${procedure.animalType != null ? procedure.animalType.name : 'Подходит для всех'}"></span>
+    </div>
+
+    <form action="/procedures/update" th:object="${procedureForm}" method="post">
+        <input type="hidden" th:field="*{id}" />
+
+        <div class="form-group">
+            <label for="name">Название:</label>
+            <input type="text" id="name" th:field="*{name}"
+                   th:class="${#fields.hasErrors('name')} ? 'form-control is-invalid' : 'form-control'"
+                   oninput="capitalizeFirstLetter(this)" />
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+        </div>
+
+        <div class="form-group">
+            <label for="price">Цена, ₽:</label>
+            <input type="number" id="price" th:field="*{price}"
+                   th:class="${#fields.hasErrors('price')} ? 'form-control is-invalid' : 'form-control'"
+                   min="1" step="1" />
+            <div class="invalid-feedback" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+            <small class="form-text text-muted">При изменении цены будет создана новая ценовая запись с текущей датой</small>
+        </div>
+
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="active" th:field="*{active}">
+            <label class="form-check-label" for="active">Услуга активна</label>
+        </div>
+
+        <button type="submit" class="btn btn-success">Сохранить</button>
+        <button type="button" class="btn btn-secondary" onclick="window.location.href='/procedures/all'">Отмена</button>
+    </form>
+</div>
+
+<script>
+    function capitalizeFirstLetter(inputElement) {
+        let inputValue = inputElement.value;
+        if(inputValue.length > 0){
+            let capitalizedValue = inputValue.charAt(0).toUpperCase() + inputValue.slice(1).toLowerCase();
+            inputElement.value = capitalizedValue;
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Услуги</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f1f3f6;
+            font-family: 'Segoe UI', sans-serif;
+            color: #2c2c2c;
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            padding: 0.5rem 1rem;
+        }
+
+        .navbar-brand {
+            color: #4b0082 !important;
+            font-weight: bold;
+            font-size: 1.4rem;
+            transition: color 0.3s ease;
+            margin-right: 1.2rem;
+        }
+
+        .navbar-brand:hover {
+            color: #6a0dad !important;
+            text-decoration: none;
+        }
+
+        .navbar-nav {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .nav-link {
+            color: #333;
+            font-weight: 500;
+            padding: 0.4rem 0;
+            transition: color 0.2s ease;
+        }
+
+        .nav-link:hover {
+            color: #6a0dad;
+            text-decoration: none;
+        }
+
+        .pets-highlight {
+            border: 2px solid #6a0dad;
+            border-radius: 8px;
+            padding: 5px 12px;
+            background-color: #f2eaff;
+            color: #6a0dad !important;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .pets-highlight:hover {
+            background-color: #e2d3ff;
+        }
+
+        .pets-highlight i {
+            color: #6a0dad;
+        }
+
+        .nav-profile i {
+            margin-right: 4px;
+            color: #555;
+        }
+
+        /* Кастомная фиолетовая плашка для цен */
+        .badge-purple {
+            background-color: #f2eaff;
+            color: #4b0082;
+            font-weight: 600;
+            padding: 0.5em 0.75em;
+            border-radius: 1rem;
+        }
+
+        @media (max-width: 991.98px) {
+            .navbar-collapse {
+                text-align: left;
+            }
+
+            .navbar-nav {
+                flex-direction: column;
+                align-items: flex-start !important;
+                gap: 0;
+            }
+
+            .nav-link {
+                padding: 0.3rem 0;
+                color: #333 !important;
+                font-weight: 500;
+            }
+
+            .nav-link:hover {
+                color: #4b0082 !important;
+            }
+
+            .pets-highlight {
+                all: unset;
+                display: block;
+                color: #333 !important;
+                font-weight: 500;
+            }
+
+            .pets-highlight i {
+                color: #333 !important;
+            }
+
+            .nav-profile i {
+                color: #333 !important;
+            }
+        }
+        .accordion-button-custom {
+            color: #4b0082;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .accordion-button-custom:hover {
+            color: #6a0dad;
+            text-decoration: none;
+        }
+
+    </style>
+</head>
+
+<body>
+<div th:replace="~{/public/menu :: navigation}"></div>
+
+<div class="container py-4">
+    <h2 class="mb-4">Услуги и цены</h2>
+
+    <div id="accordion">
+        <div th:each="cat, stat : ${categories}" class="card mb-2">
+            <div class="card-header" th:attr="id='heading-' + ${stat.index}">
+                <h5 class="mb-0">
+                    <button class="btn btn-link accordion-button-custom" data-toggle="collapse"
+                            th:attr="data-target='#collapse-' + ${stat.index}"
+                            aria-expanded="true"
+                            th:attrappend="aria-controls='collapse-' + ${stat.index}">
+                        <i class="fas fa-chevron-down mr-2"></i>
+                        <span th:text="${cat.categoryName}">Название категории</span>
+                    </button>
+                </h5>
+            </div>
+
+            <div th:attr="id='collapse-' + ${stat.index}"
+                 class="collapse"
+                 th:classappend="${stat.index == 0} ? ' show'" data-parent="#accordion">
+                <div class="card-body">
+                    <div th:each="entry : ${cat.animalTypeToProcedures}">
+                        <h6 class="text-secondary mt-3 mb-2" th:text="${entry.key}"></h6>
+                        <ul class="list-group mb-3">
+                            <li class="list-group-item d-flex justify-content-between align-items-center"
+                                th:each="proc : ${entry.value}">
+                                <span th:text="${proc.name}">Название услуги</span>
+                                <span class="badge badge-purple"
+                                      th:text="${proc.price + ' ₽'}">Цена</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

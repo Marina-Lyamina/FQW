@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        html, body {
+            height: 100%;
+            background-color: #f8f9fa;
+        }
+
+        .wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .register-container {
+            width: 100%;
+            max-width: 600px;
+            padding: 30px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-group-center {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="register-container">
+        <h3 class="text-center mb-4">Регистрация</h3>
+
+        <form th:action="@{/register}" th:object="${client}" method="post">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label>Фамилия</label>
+                    <input type="text" th:field="*{user.surname}" class="form-control" placeholder="Фамилия" required>
+                    <div class="text-danger" th:if="${#fields.hasErrors('user.surname')}" th:errors="*{user.surname}"></div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label>Имя</label>
+                    <input type="text" th:field="*{user.name}" class="form-control" placeholder="Имя" required>
+                    <div class="text-danger" th:if="${#fields.hasErrors('user.name')}" th:errors="*{user.name}"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Отчество</label>
+                <input type="text" th:field="*{user.patronymic}" class="form-control" placeholder="Отчество">
+                <div class="text-danger" th:if="${#fields.hasErrors('user.patronymic')}" th:errors="*{user.patronymic}"></div>
+            </div>
+
+            <div class="form-group">
+                <label>Дата рождения</label>
+                <input type="date" th:field="*{user.birthday}" class="form-control">
+                <div class="text-danger" th:if="${#fields.hasErrors('user.birthday')}" th:errors="*{user.birthday}"></div>
+            </div>
+
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" th:field="*{user.email}" class="form-control" placeholder="example@mail.com" required>
+                <div class="text-danger" th:if="${#fields.hasErrors('user.email')}" th:errors="*{user.email}"></div>
+            </div>
+
+            <div class="form-group">
+                <label>Телефон</label>
+                <input type="text" th:field="*{user.phone}" class="form-control" placeholder="79001234567" required>
+                <div class="text-danger" th:if="${#fields.hasErrors('user.phone')}" th:errors="*{user.phone}"></div>
+            </div>
+
+            <div class="form-group">
+                <label>Логин</label>
+                <input type="text" th:field="*{user.username}" class="form-control" placeholder="Логин" required>
+                <div class="text-danger" th:if="${#fields.hasErrors('user.username')}" th:errors="*{user.username}"></div>
+            </div>
+
+            <div class="form-group">
+                <label>Пароль</label>
+                <input type="password" th:field="*{user.password}" class="form-control" placeholder="Пароль" required>
+                <div class="text-danger" th:if="${#fields.hasErrors('user.password')}" th:errors="*{user.password}"></div>
+            </div>
+
+            <div class="form-group">
+                <label>Подтвердите пароль</label>
+                <input type="password" name="confirmPassword" class="form-control" placeholder="Повторите пароль" required>
+                <div class="text-danger"
+                     th:if="${#fields.hasErrors('user.password') or #fields.hasGlobalErrors()}"
+                     th:errors="*{user.password}">
+                </div>
+            </div>
+
+            <div class="btn-group-center mt-4">
+                <button type="submit" class="btn btn-success px-4">Зарегистрироваться</button>
+                <a th:href="@{/}" class="btn btn-outline-secondary px-4">Отмена</a>
+            </div>
+        </form>
+
+        <p class="mt-4 text-center">
+            Уже есть аккаунт? <a th:href="@{/login}">Войти</a>
+        </p>
+    </div>
+</div>
+
+</body>
+</html>

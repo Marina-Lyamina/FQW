@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Подробнее о питомце</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f4f4f4;
+            font-family: 'Segoe UI', sans-serif;
+            color: #222;
+        }
+
+        .navbar {
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            padding: 0.5rem 1rem;
+        }
+
+        .navbar-brand {
+            color: #4b0082 !important;
+            font-weight: bold;
+            font-size: 1.4rem;
+            transition: color 0.3s ease;
+            margin-right: 1.2rem;
+        }
+
+        .navbar-brand:hover {
+            color: #6a0dad !important;
+            text-decoration: none;
+        }
+
+        .nav-link {
+            color: #333;
+            font-weight: 500;
+        }
+
+        .nav-link:hover {
+            color: #6a0dad;
+            text-decoration: none;
+        }
+
+        .pets-highlight {
+            border: 2px solid #6a0dad;
+            border-radius: 8px;
+            padding: 5px 12px;
+            background-color: #f2eaff;
+            color: #6a0dad !important;
+            font-weight: 600;
+        }
+
+        .pets-highlight i {
+            color: #6a0dad;
+        }
+
+        .card-info {
+            background-color: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            height: 100%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            color: #4b0082;
+            margin-top: 2rem;
+        }
+
+        .record-item, .appointment-item {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .record-info, .appointment-info {
+            flex-grow: 1;
+        }
+
+        .record-icon {
+            color: #6a0dad;
+            margin-right: 8px;
+        }
+
+        .appointment-icon {
+            color: #28a745;
+            margin-right: 8px;
+        }
+
+        .btn-custom {
+            border: 1px solid #6a0dad;
+            color: #6a0dad;
+            background-color: #f7f0ff;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .btn-custom:hover {
+            background-color: #e9dfff;
+            color: #4b0082;
+        }
+
+        .btn-custom i {
+            margin-right: 6px;
+        }
+
+        img.animal-photo {
+            object-fit: cover;
+            height: 100%;
+            width: 100%;
+            border-radius: 12px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-details {
+            border: 1px solid #6a0dad;
+            background-color: transparent;
+            color: #6a0dad;
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-weight: 500;
+            transition: 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .btn-details:hover {
+            background-color: #e9dfff;
+            color: #4b0082;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            img.animal-photo {
+                height: auto;
+            }
+
+            .record-item, .appointment-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .btn-details {
+                align-self: flex-end;
+                margin-top: 8px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+<div th:replace="~{auth_clients/client_menu :: navigation}"></div>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <img class="animal-photo" th:src="|data:image/jpeg;base64,${filePhoto}|" />
+        </div>
+        <div class="col-md-8">
+            <div class="card-info">
+                <h4 class="mb-3" th:text="${animal.name}"></h4>
+                <p><strong>Вид:</strong> <span th:text="${animal.animalType != null ? animal.animalType.name : '-'}"></span></p>
+                <p><strong>Порода:</strong> <span th:text="${animal.breed != null ? animal.breed.name : '-'}"></span></p>
+                <p><strong>Пол:</strong> <span th:text="${animal.gender.getRussianString()}"></span></p>
+                <p><strong>Дата рождения:</strong> <span th:text="${#temporals.format(animal.birthday, 'dd.MM.yyyy')}"></span></p>
+
+                <div class="mt-3 d-flex flex-wrap gap-2">
+                    <a class="btn btn-custom mr-2 mb-2" th:href="@{/pets/update/{id}(id=${animal.id})}">
+                        <i class="fas fa-pen"></i>Редактировать
+                    </a>
+                    <button type="button" class="btn btn-custom mr-2 mb-2" data-toggle="modal" data-target="#photoModal">
+                        <i class="fas fa-image"></i>Фото
+                    </button>
+                    <a class="btn btn-custom mb-2" th:href="@{/animals/delete/{id}(id=${animal.id})}">
+                        <i class="fas fa-trash"></i>Удалить
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h4 class="section-title">Записи на прием</h4>
+
+    <div th:if="${!hasFutureSchedules}" class="text-muted mb-3">
+        Нет записей на прием.
+    </div>
+
+    <div th:each="schedule : ${animal.schedules}" th:if="${hasFutureSchedules}" class="record-item">
+        <div class="record-info">
+            <span class="record-icon"><i class="fas fa-calendar-alt"></i></span>
+            <strong th:text="${#temporals.format(schedule.date, 'dd.MM.yyyy HH:mm')}"></strong><br>
+            <ul><li><span>
+<!--                <strong>Сотрудник:</strong> -->
+                <span th:text="${schedule.employee.user.getFIO()}"></span> (<span th:text="${#strings.toLowerCase(schedule.employee.position.name)}"></span>)</span></li></ul>
+        </div>
+    </div>
+
+
+    <h4 class="section-title">Все приемы</h4>
+
+    <div th:if="${!hasAppointments}" class="text-muted mb-3">
+        Нет приемов.
+    </div>
+
+    <div th:each="appointment : ${animal.appointments}" th:if="${hasAppointments}" class="appointment-item">
+        <div class="appointment-info">
+            <span class="appointment-icon"><i class="fas fa-calendar-check"></i></span>
+            <strong th:text="${#temporals.format(appointment.date, 'dd.MM.yyyy HH:mm')}"></strong><br>
+<!--            <span><strong>Сотрудники:</strong></span>-->
+            <ul>
+                <li th:each="employee : ${appointment.employees}">
+                    <span th:text="${employee.user.getFIO()}"></span> (<span th:text="${#strings.toLowerCase(employee.position.name)}"></span>)
+                </li>
+            </ul>
+        </div>
+        <div>
+            <a class="btn-details mb-1" th:href="@{/appointments/details/{id}(id=${appointment.id})}">
+                <i class="fas fa-info-circle"></i> Подробнее
+            </a>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a th:href="@{/pets}">&larr; Назад к списку</a>
+    </div>
+</div>
+
+<!-- Модальное окно -->
+<div class="modal fade" id="photoModal" tabindex="-1" role="dialog" aria-labelledby="photoModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form method="post" th:action="@{'/pets/updatePhoto/' + ${animal.id}}" enctype="multipart/form-data" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="photoModalLabel">Загрузка нового фото</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Закрыть">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="file" name="image" accept="image/*" class="form-control-file" required>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-outline-success">Сохранить</button>
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Отмена</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

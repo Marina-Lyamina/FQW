@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Удаление породы</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div  th:replace="~{main_menu :: navigation}"></div>
+
+<div class="container mt-4">
+    <h1 class="mb-4">Удаление породы</h1>
+
+    <div class="alert alert-warning">
+        <p><strong>Название:</strong> <span th:text="${breed.name}"></span></p>
+        <p><strong>Вид:</strong> <span th:text="${breed.animalType.name}"></span></p>
+    </div>
+
+    <div th:if="${hasAnimals}" class="alert alert-danger">
+        Невозможно удалить породу, так как к ней привязаны животные.
+    </div>
+
+    <form th:action="@{/breeds/delete/{id}(id=${breed.id})}" method="post" th:if="${!hasAnimals}">
+        <button type="submit" class="btn btn-outline-danger">Удалить</button>
+        <a href="/breeds/all" class="btn btn-outline-secondary">Отмена</a>
+    </form>
+
+    <div th:if="${hasAnimals}">
+        <a href="/breeds/all" class="btn btn-outline-secondary">Вернуться</a>
+    </div>
+</div>
+</body>
+</html>

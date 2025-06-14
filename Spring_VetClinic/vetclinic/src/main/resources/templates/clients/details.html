@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Подробнее</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+<div  th:replace="~{main_menu :: navigation}"></div>
+
+<div class="container">
+    <h1 class="my-4">Клиент</h1>
+
+    <table class="table table-bordered table-sm w-50">
+        <tbody>
+        <tr>
+            <th scope="row">ФИО</th>
+            <td th:text="${client.user.getFIO()}"></td>
+        </tr>
+        <tr>
+            <th scope="row">Дата рождения</th>
+            <td th:text="${#temporals.format(client.user.birthday, 'dd.MM.yyyy')}"></td>
+        </tr>
+        <tr>
+            <th scope="row">Телефон</th>
+            <td th:text="${client.user.phone}"></td>
+        </tr>
+        <tr>
+            <th scope="row">Email</th>
+            <td th:text="${client.user.email}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="mb-4">
+        <a class="btn btn-outline-primary mr-2" th:href="@{/clients/update/{id}(id=${client.id})}">Редактировать клиента</a>
+        <a class="btn btn-outline-danger" th:href="@{/clients/delete/{id}(id=${client.id})}">Удалить клиента</a>
+    </div>
+
+    <h4 class="mb-3">Питомцы клиента</h4>
+    <a th:href="@{/animals/create(clientId=${client.id})}" class="btn btn-outline-success mb-2">Добавить питомца</a>
+
+    <table class="table table-bordered table-sm">
+        <thead class="thead-light">
+        <tr>
+            <th style="width: 5%;">#</th>
+            <th style="width: 25%;">Кличка</th>
+            <th style="width: 25%;">Вид</th>
+            <th style="width: 25%;">Порода</th>
+            <th style="width: 20%;" class="text-center">Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="animal, iterStat : ${client.animals}">
+            <td th:text="${iterStat.count}"></td>
+            <td th:text="${animal.name}"></td>
+            <td th:text="${animal.animalType.name}"></td>
+            <td>
+                <span th:if="${animal.breed != null}" th:text="${animal.breed.name}"></span>
+                <span th:if="${animal.breed == null}" class="text-muted small italic">не выбрана</span>
+            </td>
+            <td class="text-center">
+                <a class="btn btn-sm btn-outline-info mr-1" th:href="@{/animals/details/{id}(id=${animal.id})}">Подробнее</a>
+                <a class="btn btn-sm btn-outline-danger" th:href="@{/animals/delete/{id}(id=${animal.id})}">Удалить</a>
+            </td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(client.animals)}">
+            <td colspan="5" class="text-center text-muted">Нет зарегистрированных питомцев</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a href="/clients/all">← Назад к списку клиентов</a>
+</div>
+
+</body>
+</html>

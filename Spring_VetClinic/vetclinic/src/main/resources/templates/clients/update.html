@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Изменение</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+<div  th:replace="~{main_menu :: navigation}"></div>
+
+<div class="container">
+    <h1 class="my-4">Изменение клиента</h1>
+    <form action="/clients/update" th:object="${client}" method="post">
+        <input type="hidden" th:field="*{id}" />
+
+<!--        <input type="hidden" th:field="*{user.id}" />-->
+        <div class="form-group">
+            <label for="surname">Фамилия:<span class="text-danger">*</span></label>
+            <input type="text" id="surname" th:field="*{user.surname}" class="form-control" oninput="capitalizeFirstLetter(this)"/>
+            <div class="text-danger" th:if="${#fields.hasErrors('user.surname')}" th:errors="*{user.surname}"></div>
+        </div>
+        <div class="form-group">
+            <label for="name">Имя:<span class="text-danger">*</span></label>
+            <input type="text" id="name" th:field="*{user.name}" class="form-control" oninput="capitalizeFirstLetter(this)"/>
+            <div class="text-danger" th:if="${#fields.hasErrors('user.name')}" th:errors="*{user.name}"></div>
+        </div>
+        <div class="form-group">
+            <label for="patronymic">Отчество:</label>
+            <input type="text" id="patronymic" th:field="*{user.patronymic}" class="form-control" oninput="capitalizeFirstLetter(this)"/>
+            <div class="text-danger" th:if="${#fields.hasErrors('user.patronymic')}" th:errors="*{user.patronymic}"></div>
+        </div>
+        <div class="form-group">
+            <label for="birthday">Дата рождения:</label>
+            <input type="date" id="birthday" th:field="*{user.birthday}" class="form-control"/>
+            <div class="text-danger" th:if="${#fields.hasErrors('user.birthday')}" th:errors="*{user.birthday}"></div>
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" th:field="*{user.email}" class="form-control"/>
+            <div class="text-danger" th:if="${#fields.hasErrors('user.email')}" th:errors="*{user.email}"></div>
+        </div>
+        <div class="form-group">
+            <label for="phone">Телефон:</label>
+            <input type="tel" id="phone" th:field="*{user.phone}" class="form-control"/>
+            <div class="text-danger" th:if="${#fields.hasErrors('user.phone')}" th:errors="*{user.phone}"></div>
+        </div>
+        <div class="form-group">
+            <label for="username">Логин:<span class="text-danger">*</span></label>
+            <input type="text" id="username" th:field="*{user.username}" class="form-control"/>
+            <div class="text-danger" th:if="${#fields.hasErrors('user.username')}" th:errors="*{user.username}"></div>
+        </div>
+        <p class="text-danger mt-3 mb-3">* - Поля, обязательные для заполнения</p>
+        <button type="submit" class="btn btn-outline-success">Сохранить</button>
+        <button type="button" class="btn btn-outline-secondary" th:onclick="'window.location.href=\'/clients/details/' + ${client.id} + '\';'">Отмена</button>
+    </form>
+</div>
+
+<script>
+    function capitalizeFirstLetter(inputElement) {
+        let inputValue = inputElement.value;
+        if(inputValue.length >0){
+            let capitalizedValue = inputValue.charAt(0).toUpperCase() + inputValue.slice(1).toLowerCase();
+            inputElement.value = capitalizedValue;
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Подробнее</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+<div  th:replace="~{main_menu :: navigation}"></div>
+
+<div class="container">
+    <h1 class="my-4">Подробнее о должности</h1>
+    <div class="card">
+        <div class="card-body">
+            <p><strong>Название:</strong> <span th:text="${position.name}"></span></p>
+        </div>
+    </div>
+    <h4 class="my-3">Все сотрудники данной должности (количество: <span th:text="${position.employees.size()}"></span>)</h4>
+    <table class="table table-bordered">
+        <thead class="thead-light">
+        <tr>
+            <th>#</th>
+            <th style="width: 100%;">ФИО</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="employee, iterStat : ${position.employees}">
+            <td th:text="${iterStat.count}"></td>
+            <td th:text="${employee.user.getFIO()}"></td>
+            <td class="text-nowrap text-right">
+                <a class="btn btn-outline-info btn-sm" th:href="@{/employees/details/{id}(id=${employee.id})}">Подробнее</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+<!--    <div class="mt-3">-->
+<!--        <a class="btn btn-outline-primary" th:href="@{/positions/update/{id}(id=${position.id})}">Редактировать</a>-->
+<!--        <a class="btn btn-outline-danger" th:href="@{/positions/delete/{id}(id=${position.id})}">Удалить</a>-->
+<!--    </div>-->
+    <div class="mt-3">
+        <a href="/positions/all">Назад к списку</a>
+    </div>
+</div>
+</body>
+</html>

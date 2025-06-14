@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Удаление</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+<div  th:replace="~{main_menu :: navigation}"></div>
+
+<div class="container">
+    <h1 class="my-4">Удаление вида животного</h1>
+
+    <!-- Если есть связанные животные -->
+    <div th:if="${hasAnimals}">
+        <p class="text-danger">
+            Невозможно удалить вид животного, так как он связан с питомцами.<br>
+        </p>
+        <div class="alert alert-warning">
+            <strong>Название:</strong> <span th:text="${animalType.name}"></span>
+        </div>
+        <a class="link-dark" th:href="@{/animaltypes/all}">Назад к списку</a>
+    </div>
+
+    <!-- Если нет связанных животных -->
+    <div th:if="${!hasAnimals}">
+        <p>Вы действительно хотите удалить данный вид животного?</p>
+        <div class="alert alert-warning">
+            <strong>Название:</strong> <span th:text="${animalType.name}"></span>
+        </div>
+        <form th:action="@{/animaltypes/delete/{id}(id=${animalType.id})}" method="post">
+            <button type="submit" class="btn btn-outline-danger">Удалить</button>
+            <button type="button" class="btn btn-outline-secondary" onclick="window.location.href='/animaltypes/all'">Отмена</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

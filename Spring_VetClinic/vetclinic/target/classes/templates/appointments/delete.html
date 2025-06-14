@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Удаление</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+<div  th:replace="~{main_menu :: navigation}"></div>
+
+<div class="container">
+    <h1 class="my-4">Удаление приема</h1>
+
+    <p>Вы действительно хотите удалить данного питомца?</p>
+    <div class="alert alert-warning">
+        <p><strong>Дата:</strong> <span th:text="${#temporals.format(appointment.date, 'dd.MM.yyyy HH:mm')}"></span></p>
+        <p><strong>Врачи:</strong></p>
+        <ul class="list-unstyled">
+            <li th:each="employee : ${appointment.employees}">
+                - <span th:text="${employee.user.getFIO()}"></span> (<span th:text="${#strings.toLowerCase(employee.position.name)}"></span>)
+            </li>
+        </ul>
+        <p><strong>Клиент:</strong> <span th:text="${appointment.animal.client.user.getFIO()}"></span></p>
+        <p><strong>Питомец:</strong> <span th:text="${appointment.animal.name}"></span></p>
+    </div>
+    <form th:action="@{/appointments/delete/{id}(id=${appointment.id})}" method="post">
+        <button type="submit" class="btn btn-outline-danger">Удалить</button>
+        <button type="button" class="btn btn-outline-secondary" th:onclick="'window.location.href=\'/animals/details/' + ${appointment.animal.id} + '\';'">
+            Отмена
+        </button>
+    </form>
+</div>
+
+</body>
+</html>

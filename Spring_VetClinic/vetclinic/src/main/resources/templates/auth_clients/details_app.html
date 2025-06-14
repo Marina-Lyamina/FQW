@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Прием</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/css/lightbox.min.css">
+    <style>
+        body {
+             background-color: #f1f3f6;
+             font-family: 'Segoe UI', sans-serif;
+             color: #2c2c2c;
+             line-height: 1.6;
+         }
+
+         /* Меню */
+         .navbar {
+             background-color: #fff;
+             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+             padding: 0.5rem 1rem;
+         }
+
+         .navbar-brand {
+             color: #4b0082 !important;
+             font-weight: bold;
+             font-size: 1.4rem;
+             margin-right: 1.2rem;
+         }
+
+         .navbar-brand:hover {
+             color: #6a0dad !important;
+             text-decoration: none;
+         }
+
+         .navbar-nav {
+             display: flex;
+             align-items: center;
+             gap: 1rem;
+         }
+
+         .nav-link {
+             color: #333;
+             font-weight: 500;
+         }
+
+         .nav-link:hover {
+             color: #6a0dad;
+         }
+
+         .pets-highlight {
+             border: 2px solid #6a0dad;
+             border-radius: 8px;
+             padding: 5px 12px;
+             background-color: #f2eaff;
+             color: #6a0dad !important;
+             font-weight: 600;
+             display: flex;
+             align-items: center;
+             gap: 6px;
+         }
+
+         .pets-highlight:hover {
+             background-color: #e2d3ff;
+         }
+
+         .pets-highlight i {
+             color: #6a0dad;
+         }
+
+         .nav-profile i {
+             margin-right: 4px;
+             color: #555;
+         }
+
+         @media (max-width: 991.98px) {
+             .navbar-collapse {
+                 text-align: left;
+             }
+
+             .navbar-nav {
+                 flex-direction: column;
+                 align-items: flex-start !important;
+                 gap: 0;
+             }
+
+             .nav-link {
+                 color: #333 !important;
+             }
+
+             .pets-highlight,
+             .pets-highlight i,
+             .nav-profile i {
+                 color: #333 !important;
+             }
+         }
+
+         /* Карточки питомцев */
+         .pet-card {
+             background-color: #fff;
+             border-radius: 1rem;
+             padding: 1.5rem;
+             box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+             margin-bottom: 2rem;
+             display: flex;
+             align-items: flex-start;
+         }
+
+         .pet-photo {
+             width: 130px;
+             height: 130px;
+             object-fit: cover;
+             border-radius: 0.75rem;
+             margin-right: 1.5rem;
+         }
+
+         .pet-info {
+             flex-grow: 1;
+         }
+
+         .pet-name {
+             font-size: 1.3rem;
+             font-weight: 500;
+             margin-bottom: 0.5rem;
+         }
+
+         .pet-details-btn {
+             font-size: 0.9rem;
+             margin-bottom: 1rem;
+         }
+
+         .appointment-entry {
+             font-size: 0.95rem;
+             margin-bottom: 0.4rem;
+         }
+
+         .appointment-entry i {
+             color: #6f42c1;
+             margin-right: 0.4rem;
+         }
+
+         .card-divider {
+             height: 1px;
+             background-color: #e0e0e0;
+             margin: 1rem 0;
+         }
+
+         .section-title {
+             font-weight: 600;
+             margin-bottom: 1.5rem;
+         }
+
+         .no-pets-wrapper {
+             height: 60vh;
+             display: flex;
+             justify-content: center;
+             align-items: center;
+         }
+
+         .no-pets-message {
+             font-size: 1.25rem;
+             color: #666;
+         }
+
+        .btn-details {
+            border: 1px solid #6a0dad;
+            background-color: transparent;
+            color: #6a0dad;
+            border-radius: 8px;
+            padding: 6px 12px;
+            font-weight: 500;
+            transition: 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .btn-details:hover {
+            background-color: #e9dfff;
+            color: #4b0082;
+            text-decoration: none;
+        }
+
+        h1, h2 {
+            font-weight: 600;
+            color: #4b0082;
+        }
+
+        .card {
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: none;
+        }
+
+        .info-block {
+            margin-bottom: 1.5rem;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #555;
+        }
+
+        .info-value {
+            display: inline-block;
+            margin-left: 0.5rem;
+        }
+
+        .service-card {
+            background: #fff;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            box-shadow: 0 1px 5px rgba(0,0,0,0.05);
+        }
+
+        .photo-gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .photo-gallery img {
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            max-height: 180px;
+        }
+
+        .photo-gallery img:hover {
+            transform: scale(1.02);
+        }
+
+        a.back-link {
+            color: #6a0dad;
+            font-weight: 500;
+            display: inline-block;
+            margin-top: 2rem;
+        }
+
+        a.back-link:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+
+<div th:replace="~{auth_clients/client_menu :: navigation}"></div>
+
+<div class="container py-4">
+    <h1 class="mb-4">Подробнее о приеме</h1>
+
+    <div class="card p-4 mb-5">
+        <div class="info-block">
+            <span class="info-label">Дата:</span>
+            <span class="info-value" th:text="${#temporals.format(appointment.date, 'dd.MM.yyyy HH:mm')}"></span>
+        </div>
+
+        <div class="info-block">
+            <span class="info-label">Врачи:</span>
+            <ul class="mb-0 mt-2">
+                <li th:each="employee : ${appointment.employees}">
+                    <span th:text="${employee.user.getFIO()}"></span>
+                    (<span th:text="${#strings.toLowerCase(employee.position.name)}"></span>)
+                </li>
+            </ul>
+        </div>
+
+        <div class="info-block">
+            <span class="info-label">Питомец:</span>
+            <span class="info-value" th:text="${appointment.animal.name}"></span>
+        </div>
+
+        <div class="info-block">
+            <span class="info-label">Причина обращения:</span>
+            <span class="info-value" th:text="${appointment.reason}"></span>
+        </div>
+
+        <div class="info-block">
+            <span class="info-label">Диагноз:</span>
+            <span class="info-value" th:text="${appointment.diagnosis?.name}">не указан</span>
+        </div>
+
+        <div class="info-block">
+            <span class="info-label">Рекомендации:</span>
+            <div class="info-value mt-1" th:text="${appointment.medicalPrescription}"></div>
+        </div>
+    </div>
+
+    <h2 class="mb-3">Оказанные услуги</h2>
+    <div th:each="procedure, iterStat : ${appointment.procedures}" class="service-card">
+        <strong th:text="${iterStat.count} + '. '"></strong>
+        <span th:text="${procedure.name}"></span>
+    </div>
+
+    <h2 class="mt-5 mb-3">Фотографии</h2>
+    <div class="photo-gallery">
+        <a th:each="filePhoto, iterStat : ${filesPhoto}"
+           th:href="'data:image/jpeg;base64,' + ${filePhoto}"
+           data-lightbox="appointment-gallery"
+           th:data-title="'Фото ' + ${iterStat.count}">
+            <img th:src="'data:image/jpeg;base64,' + ${filePhoto}" alt="Фото" class="img-thumbnail"/>
+        </a>
+    </div>
+
+    <a class="back-link" th:href="@{/pets/{id}(id=${appointment.animal.id})}">
+        ← Назад к питомцу
+    </a>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.4/js/lightbox.min.js"></script>
+</body>
+</html>

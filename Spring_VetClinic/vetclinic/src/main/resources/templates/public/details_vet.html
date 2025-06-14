@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Подробнее о специалисте</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css">
+  <style>
+    body {
+            background-color: #f1f3f6;
+            font-family: 'Segoe UI', sans-serif;
+            color: #2c2c2c;
+            line-height: 1.6;
+        }
+
+    .navbar {
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      padding: 0.5rem 1rem;
+    }
+
+    .navbar-brand {
+      color: #4b0082 !important;
+      font-weight: bold;
+      font-size: 1.4rem;
+      transition: color 0.3s ease;
+      margin-right: 1.2rem;
+    }
+
+    .navbar-brand:hover {
+      color: #6a0dad !important;
+      text-decoration: none;
+    }
+
+    .navbar-nav {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .nav-link {
+      color: #333;
+      font-weight: 500;
+      padding: 0.4rem 0;
+      transition: color 0.2s ease;
+    }
+
+    .nav-link:hover {
+      color: #6a0dad;
+      text-decoration: none;
+    }
+
+    .pets-highlight {
+      border: 2px solid #6a0dad;
+      border-radius: 8px;
+      padding: 5px 12px;
+      background-color: #f2eaff;
+      color: #6a0dad !important;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pets-highlight:hover {
+      background-color: #e2d3ff;
+    }
+
+    .pets-highlight i {
+      color: #6a0dad;
+    }
+
+    .nav-profile i {
+      margin-right: 4px;
+      color: #555;
+    }
+
+    @media (max-width: 991.98px) {
+      .navbar-collapse {
+        text-align: left;
+      }
+
+      .navbar-nav {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 0;
+      }
+
+      .nav-link {
+        padding: 0.3rem 0;
+        color: #333 !important;
+        font-weight: 500;
+      }
+
+      .nav-link:hover {
+        color: #4b0082 !important;
+      }
+
+      .pets-highlight {
+        all: unset;
+        display: block;
+        color: #333 !important;
+        font-weight: 500;
+      }
+
+      .pets-highlight i {
+        color: #333 !important;
+      }
+
+      .nav-profile i {
+        color: #333 !important;
+      }
+    }
+
+    .content-wrapper {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+
+    .photo-wrapper img {
+      max-width: 100%;
+      height: auto;
+      max-height: 300px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .calendar-section {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+
+    #calendar {
+      width: 400px;
+      height: 400px;
+    }
+
+    #time-slots {
+      flex: 1;
+    }
+
+    /* кнопки времени */
+    .slot-button {
+      margin: 0.4rem;
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      background-color: #f1fdf3;
+      border: 2px solid #28a745;
+      color: #222;
+      font-weight: 500;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .slot-button:hover {
+      background-color: #d0f5d8;
+      color: #000;
+      border-color: #218838;
+    }
+
+    /* кнопка "Записаться" */
+    #book-btn {
+      padding: 0.7rem 2.5rem;
+      font-size: 1rem;
+      border: 2px solid #6a0dad;
+      background-color: transparent;
+      color: #6a0dad;
+      border-radius: 10px;
+      transition: all 0.25s ease;
+      font-weight: 600;
+    }
+
+    #book-btn:hover {
+      background-color: #f1e7ff;
+      color: #4b0082;
+      border-color: #4b0082;
+    }
+
+    /* ВЫБРАННАЯ ДАТА  */
+    .fc-daygrid-day.selected-date {
+      outline: 3px solid black;
+      outline-offset: -2px;
+      border-radius: 4px;
+    }
+
+    /* Сообщение при загрузке */
+    #slots-container.empty {
+      text-align: center;
+      font-size: 1.2rem;
+      color: #6c757d;
+    }
+
+    /* Сообщение при отсутствии слотов */
+    #slots-container.no-slots {
+      text-align: center;
+      font-size: 1.2rem;
+      color: #6c757d;
+    }
+
+    .section-title {
+            color: #4b0082;
+            margin-bottom: 2rem;
+    }
+
+    .back-link {
+      color: #6a0dad;
+    }
+
+    .back-link:hover {
+      color: #4b0082;
+      text-decoration: none;
+    }
+
+    .modal-content {
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .custom-control-input:checked ~ .custom-control-label::before {
+      border-color: #6a0dad;
+      background-color: #6a0dad;
+    }
+
+    .custom-control-label::before {
+      border-radius: 50%;
+      border: 2px solid #6a0dad;
+      background-color: #fff;
+      top: 0.2rem;
+      left: -1.5rem;
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+
+    .custom-control-label {
+      padding-left: 1.5rem;
+      font-weight: 500;
+      color: #333;
+    }
+
+    /* Контурная кнопка "Подробнее" */
+        .btn-outline-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 16px;
+            height: 36px;        /* Фиксированная высота как у карандашика */
+            border: 2px solid #6a0dad;
+            border-radius: 13px 6px 6px 6px;  /* Верхний левый угол более закруглен */
+            background: transparent;
+            color: #6a0dad;
+            font-size: 13px;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            gap: 6px;
+            margin-right: 5px;
+        }
+
+     .btn-outline-primary:hover {
+            background: #6a0dad;
+            color: white;
+            transform: translateY(-1px);
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(106, 13, 173, 0.3);
+        }
+
+  </style>
+</head>
+<body>
+<div th:replace="~{/public/menu :: navigation}"></div>
+
+<div class="container my-4">
+  <a th:if="${employee.availableForOnline}" th:href="@{/login}" id="book-btn" class="btn btn-outline-primary btn-sm float-right mb-3">
+    Записаться на прием <i class="fas fa-edit"></i>
+  </a>
+
+  <div class="d-flex align-items-center mb-4">
+    <a th:href="@{/vets}" class="back-link"><i class="fas fa-arrow-left"></i></a>
+    <h2 class="mb-0 ml-2" th:text="${FIO}">ФИО врача</h2>
+  </div>
+
+  <div class="content-wrapper mb-4">
+    <div class="row align-items-center">
+      <div class="col-md-5 photo-wrapper">
+        <img th:src="'data:image/jpeg;base64,' + ${filePhoto}" alt="Фото врача">
+      </div>
+      <div class="col-md-7">
+
+        <h5 class="position-title mb-3" th:text="${employee.position.name}">Должность</h5>
+        <p class="description-text" th:text="${employee.description}">Описание специалиста</p>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
+
+</body>
+</html>
